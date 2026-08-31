@@ -1,0 +1,9 @@
+.career-list { display: flex; flex-direction: column; gap: 20px; max-width: 900px; margin: 0 auto; }
+.career-card { background: var(--white); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-sm); display: grid; gap: 20px; }
+.career-main { display: flex; gap: 18px; align-items: flex-start; }
+.career-icon { width: 50px; height: 50px; border-radius: 12px; background: var(--gold-pale); display: flex; align-items: center; justify-content: center; }
+.career-title { font-family: var(--font-serif); font-size: 1.25rem; color: var(--navy); margin-bottom: 4px; }
+.career-dept { color: var(--gold-dark); font-weight: 600; margin-bottom: 10px; }
+.career-meta { display: flex; flex-wrap: wrap; gap: 14px; color: var(--gray-600); font-size: 0.85rem; }
+.career-meta span { display: inline-flex; align-items: center; gap: 6px; }
+.career-detail { border-top: 1px solid var(--gray-200); padding-top: 18px; color: var(--gray-700); line-height: 1.7; }

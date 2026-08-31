@@ -1,228 +1,181 @@
 import { useState } from 'react';
-import { useScrollReveal } from '../../hooks/useScrollReveal';
 import { Link } from 'react-router-dom';
-import './News.css';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
 
-const categories = ['All', 'Achievement', 'Event', 'Academics', 'Sports', 'Community', 'Admissions'];
-
-const newsItems = [
+const newsArticles = [
   {
-    id: 1, category: 'Achievement',
-    date: 'June 15, 2025',
-    title: 'Excelsior Students Win 8 Gold Medals at National Science Olympiad',
-    excerpt: 'Our science team brought home 8 gold medals, 4 silver, and 2 bronze in the 2025 National Science Olympiad — the best result in school history.',
-    img: 'https://images.pexels.com/photos/34162713/pexels-photo-34162713.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-    featured: true,
-    author: 'Dr. Lena Hoffmann',
+    id: 1,
+    title: 'Excelsior Scholars Sweep National Science & Robotics Olympiad 2024',
+    category: 'Achievement',
+    date: 'August 18, 2025',
+    readTime: '4 min read',
+    image: '/images/science-lab.jpg',
+    excerpt: 'Excelsior student delegations clinched 1st prize in AI solar automation and gold medals in secondary chemistry experiments.',
+    content: 'Over 40 top institutions from across Nepal gathered in Kathmandu for the 2024 National Science & Robotics Olympiad. Our Grade 10 and 11 scholars showcased an autonomous solar irrigation robot and an AI-assisted microscopic cell diagnostic platform, winning the overall institutional championship trophy.'
   },
   {
-    id: 2, category: 'Event',
-    date: 'June 10, 2025',
-    title: 'Annual International Cultural Festival 2025 — A Celebration of Diversity',
-    excerpt: 'Students from 60+ nationalities showcased their cultures through food, art, music, and performance at our biggest cultural event yet.',
-    img: 'https://images.pexels.com/photos/8199168/pexels-photo-8199168.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-    featured: true,
-    author: 'Ms. Sophie Laurent',
+    id: 2,
+    title: 'Historic Board Exam Results: 52 Students Achieve Perfect 4.0 GPA in SEE 2024',
+    category: 'Board Results',
+    date: 'July 10, 2025',
+    readTime: '5 min read',
+    image: '/images/prize distribuiton.jpg',
+    excerpt: 'Celebrating our top position in Kathmandu Valley with a 99.8% distinction pass rate and massive scholarship grants.',
+    content: 'The National Examinations Board (NEB) officially announced the SEE 2024 results today. Excelsior Apex Academy once again set the regional benchmark with 52 students securing straight 4.0 GPAs. We congratulate all students, parents, and our tireless faculty for this monumental victory.'
   },
   {
-    id: 3, category: 'Admissions',
-    date: 'June 5, 2025',
-    title: '2025–2026 Enrollment Now Open — Limited Seats Available',
-    excerpt: 'Applications for the upcoming academic year are now being accepted. We encourage families to apply early as seats fill quickly.',
-    img: 'https://images.pexels.com/photos/32476662/pexels-photo-32476662.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-    featured: false,
-    author: 'Ms. Sarah Lancaster',
+    id: 3,
+    title: 'Annual Valley Inter-School Football & Athletics Championship Commences',
+    category: 'Sports',
+    date: 'June 25, 2025',
+    readTime: '3 min read',
+    image: '/images/sports.jpg',
+    excerpt: 'Excelsior’s senior boys and girls athletic teams dominate opening fixtures at the Sports Olympiad.',
+    content: 'The Excelsior Sports Arena welcomed over 800 student athletes for the Valley Championship. With commanding victories in track 400m relays and an opening 3-0 football win, our teams are marching strong toward the finals.'
   },
   {
-    id: 4, category: 'Sports',
-    date: 'May 28, 2025',
-    title: 'Excelsior Soccer Team Clinches Northeast Regional Championship',
-    excerpt: 'After an unbeaten season, our soccer team won the Northeast Regional Championship with a thrilling 3-1 victory in the finals.',
-    img: 'https://images.pexels.com/photos/8927020/pexels-photo-8927020.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-    featured: false,
-    author: 'Mr. Ricardo Silva',
+    id: 4,
+    title: 'Grand International Model United Nations (Apex MUN) Conference Hosted',
+    category: 'Global Affairs',
+    date: 'May 30, 2025',
+    readTime: '4 min read',
+    image: '/images/school group photo.jpg',
+    excerpt: 'Delegates debated climate migration treaties, AI ethics, and international peacekeeping in a 3-day simulation.',
+    content: 'The 8th annual Apex Model United Nations conference brought together 350 youth delegates representing 60 nations. The Secretary-General commended our student leadership committee for flawless diplomatic facilitation and draft resolutions.'
   },
   {
-    id: 5, category: 'Academics',
-    date: 'May 20, 2025',
-    title: '12 Excelsior Students Accepted to Ivy League Universities',
-    excerpt: 'The Class of 2025 has achieved outstanding university placements with 12 students gaining admission to Ivy League institutions.',
-    img: 'https://images.pexels.com/photos/37811241/pexels-photo-37811241.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-    featured: false,
-    author: 'Dr. Amara Osei',
-  },
-  {
-    id: 6, category: 'Community',
+    id: 5,
+    title: 'Admissions & Scholarship Assessment for 2025–26 Academic Year Announced',
+    category: 'Admissions',
     date: 'May 15, 2025',
-    title: 'Students Raise $45,000 for Global Education Fund',
-    excerpt: 'Our student-led charity gala raised an impressive $45,000 for the Global Education Fund, supporting education in underserved communities worldwide.',
-    img: 'https://images.pexels.com/photos/9489917/pexels-photo-9489917.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-    featured: false,
-    author: 'Mr. James Okafor',
-  },
-  {
-    id: 7, category: 'Achievement',
-    date: 'May 5, 2025',
-    title: 'Excelsior Ranked #1 International School in Northeast US',
-    excerpt: 'For the second consecutive year, Excelsior has been ranked #1 International School in the Northeast US by the National Education Review.',
-    img: 'https://images.pexels.com/photos/17144608/pexels-photo-17144608.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-    featured: false,
-    author: 'Dr. James Whitfield',
-  },
-  {
-    id: 8, category: 'Event',
-    date: 'April 28, 2025',
-    title: 'Innovation Hackathon 2025 — Students Build Solutions for Real Problems',
-    excerpt: 'Over 200 students participated in our 48-hour hackathon, developing tech solutions for environmental, health, and social challenges.',
-    img: 'https://images.pexels.com/photos/37758635/pexels-photo-37758635.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-    featured: false,
-    author: 'Dr. Marcus Chen',
-  },
+    readTime: '3 min read',
+    image: '/images/classroom.jpg',
+    excerpt: 'Online registration open for Pre-Primary to Grade 11/12 with merit scholarships up to 100% tuition waiver.',
+    content: 'Prospective parents can now register for the upcoming scholarship assessment exam and schedule guided campus tours with our academic counseling team.'
+  }
 ];
 
-const upcomingEvents = [
-  { date: { day:'20', month:'Jun' }, title:'Graduation Ceremony 2025', time:'10:00 AM', location:'Main Auditorium' },
-  { date: { day:'25', month:'Jun' }, title:'Summer Academic Camp Registration', time:'Deadline', location:'Admissions Office' },
-  { date: { day:'08', month:'Jul' }, title:'Faculty Professional Development Week', time:'All Day', location:'Campus Wide' },
-  { date: { day:'15', month:'Aug' }, title:'New Student Orientation', time:'8:30 AM', location:'Welcome Hall' },
-  { date: { day:'25', month:'Aug' }, title:'Academic Year 2025–26 Begins', time:'7:45 AM', location:'All Campus' },
-];
+const categories = ['All', 'Achievement', 'Board Results', 'Sports', 'Global Affairs', 'Admissions'];
 
 export default function News() {
   useScrollReveal();
-  const [activeCategory, setActiveCategory] = useState('All');
+  const [selectedCat, setSelectedCat] = useState('All');
+  const [search, setSearch] = useState('');
+  const [expandedId, setExpandedId] = useState<number | null>(null);
 
-  const filtered = activeCategory === 'All' ? newsItems : newsItems.filter(n => n.category === activeCategory);
-  const featuredItems = newsItems.filter(n => n.featured);
+  const filtered = newsArticles.filter(item => {
+    const matchCat = selectedCat === 'All' || item.category === selectedCat;
+    const matchSearch = item.title.toLowerCase().includes(search.toLowerCase()) || item.excerpt.toLowerCase().includes(search.toLowerCase());
+    return matchCat && matchSearch;
+  });
+
+  const featured = newsArticles[0];
 
   return (
-    <div className="news-page page-enter">
-      <section className="page-hero">
-        <div className="container page-hero-content">
-          <nav className="breadcrumb">
-            <Link to="/">Home</Link>
-            <span className="breadcrumb-sep">/</span>
-            <span>News & Events</span>
-          </nav>
-          <span className="section-label" style={{color:'var(--gold-light)'}}>Stay Informed</span>
-          <h1>News & Events</h1>
-          <p>The latest from Excelsior — academic achievements, community events, and school announcements.</p>
+    <div className="news-page">
+      {/* Hero Header */}
+      <section className="page-header">
+        <div className="container" style={{ textAlign: 'center' }}>
+          <span className="section-eyebrow" style={{ color: 'var(--gold-light)', justifyContent: 'center' }}>Media & Publications</span>
+          <h1 className="page-title" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', color: '#ffffff', margin: '14px 0' }}>
+            News, Events & Media Dispatch
+          </h1>
+          <p className="page-subtitle" style={{ margin: '0 auto', maxWidth: 640 }}>
+            Stay connected with milestone achievements, student triumphs, press releases, and campus announcements.
+          </p>
         </div>
       </section>
 
-      {/* Featured News */}
-      <section className="section">
+      {/* Featured Article Card */}
+      <section className="section section-cream" style={{ paddingBottom: 0 }}>
         <div className="container">
-          <div className="section-header reveal">
-            <span className="section-label">Top Stories</span>
-            <h2 className="section-title">Featured News</h2>
-          </div>
-          <div className="featured-grid">
-            {featuredItems.map((item, i) => (
-              <div key={item.id} className="featured-news-card reveal" style={{transitionDelay:`${i * 0.15}s`}}>
-                <div className="featured-img">
-                  <img src={item.img} alt={item.title} loading="lazy"/>
-                  <span className="featured-category">{item.category}</span>
-                </div>
-                <div className="featured-body">
-                  <div className="news-meta">
-                    <span className="news-date">📅 {item.date}</span>
-                    <span className="news-author">✍️ {item.author}</span>
-                  </div>
-                  <h3>{item.title}</h3>
-                  <p>{item.excerpt}</p>
-                  <button className="btn btn-primary btn-sm">Read Full Story</button>
-                </div>
+          <div className="card reveal" style={{ padding: 0, overflow: 'hidden', borderRadius: 'var(--radius-xl)', boxShadow: 'var(--shadow-lg)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', alignItems: 'center' }}>
+              <div style={{ height: 380, overflow: 'hidden' }}>
+                <img src={featured.image} alt={featured.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
-            ))}
+              <div style={{ padding: 44 }}>
+                <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 12 }}>
+                  <span style={{ background: 'var(--gold)', color: 'var(--navy-deep)', fontWeight: 800, padding: '4px 12px', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', textTransform: 'uppercase' }}>
+                    ⭐ Breaking Headline
+                  </span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--gray-500)' }}>{featured.date}</span>
+                </div>
+                <h2 style={{ fontSize: '1.65rem', color: 'var(--navy)', marginBottom: 14, lineHeight: 1.3 }}>{featured.title}</h2>
+                <p style={{ color: 'var(--gray-500)', fontSize: '0.95rem', lineHeight: 1.7, marginBottom: 20 }}>{featured.excerpt}</p>
+                <button
+                  onClick={() => setExpandedId(expandedId === featured.id ? null : featured.id)}
+                  className="btn btn-navy"
+                >
+                  {expandedId === featured.id ? 'Collapse Article' : 'Read Full Coverage →'}
+                </button>
+              </div>
+            </div>
+            {expandedId === featured.id && (
+              <div style={{ padding: '30px 44px', background: 'var(--cream)', borderTop: '1px solid var(--gray-200)', color: 'var(--charcoal)', lineHeight: 1.8, fontSize: '1.02rem' }}>
+                {featured.content}
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* All News */}
-      <section className="section section--gray">
+      {/* Main Filter & Search Grid */}
+      <section className="section section-cream">
         <div className="container">
-          <div className="news-all-header">
-            <div className="reveal-left">
-              <span className="section-label">All Stories</span>
-              <h2 className="section-title">Latest News</h2>
-            </div>
-            <div className="news-filters reveal-right">
+          <div className="reveal" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16, marginBottom: 40 }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
               {categories.map(cat => (
                 <button
                   key={cat}
-                  className={`filter-btn ${activeCategory === cat ? 'active' : ''}`}
-                  onClick={() => setActiveCategory(cat)}
+                  onClick={() => setSelectedCat(cat)}
+                  className={`program-tab-button ${selectedCat === cat ? 'active' : ''}`}
+                  style={{ padding: '8px 18px', fontSize: '0.84rem' }}
                 >
                   {cat}
                 </button>
               ))}
             </div>
+            <div>
+              <input
+                type="text"
+                placeholder="Search articles..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                style={{ padding: '10px 18px', borderRadius: 'var(--radius-full)', border: '1px solid var(--gray-300)', outline: 'none', width: 220, background: '#fff' }}
+              />
+            </div>
           </div>
-          <div className="news-all-grid">
-            {filtered.map((item, i) => (
-              <div key={item.id} className="news-all-card reveal" style={{transitionDelay:`${(i % 4) * 0.1}s`}}>
-                <div className="news-all-img">
-                  <img src={item.img} alt={item.title} loading="lazy"/>
-                  <span className="news-all-cat">{item.category}</span>
-                </div>
-                <div className="news-all-body">
-                  <div className="news-meta">
-                    <span>{item.date}</span>
-                    <span>By {item.author}</span>
-                  </div>
-                  <h4>{item.title}</h4>
-                  <p>{item.excerpt}</p>
-                  <button className="news-read-btn">Read More →</button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Upcoming Events */}
-      <section className="section">
-        <div className="container">
-          <div className="events-layout">
-            <div className="upcoming-events reveal-left">
-              <span className="section-label">What's Coming</span>
-              <h2 className="section-title">Upcoming Events</h2>
-              <div className="gold-divider"/>
-              <div className="events-list">
-                {upcomingEvents.map((ev, i) => (
-                  <div key={i} className="event-row">
-                    <div className="event-date-block">
-                      <span className="event-day">{ev.date.day}</span>
-                      <span className="event-month">{ev.date.month}</span>
-                    </div>
-                    <div className="event-details">
-                      <h4>{ev.title}</h4>
-                      <div className="event-meta">
-                        <span>🕐 {ev.time}</span>
-                        <span>📍 {ev.location}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="newsletter-signup reveal-right">
-              <div className="newsletter-box">
-                <span className="newsletter-icon">📬</span>
-                <h3>Stay Updated</h3>
-                <p>Subscribe to our school newsletter and never miss important announcements, events, and news from Excelsior.</p>
-                <form onSubmit={e => e.preventDefault()}>
-                  <input type="email" placeholder="Your email address" />
-                  <button type="submit" className="btn btn-primary">Subscribe</button>
-                </form>
-                <div className="newsletter-features">
-                  <span>✓ Weekly digest</span>
-                  <span>✓ Event reminders</span>
-                  <span>✓ Academic updates</span>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 30 }}>
+            {filtered.map((item, idx) => (
+              <article key={item.id} className="card reveal" style={{ display: 'flex', flexDirection: 'column', background: '#ffffff', transitionDelay: `${idx * 70}ms` }}>
+                <div style={{ height: 210, overflow: 'hidden', position: 'relative' }}>
+                  <img src={item.image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <span style={{ position: 'absolute', top: 12, left: 12, background: 'rgba(6,13,26,0.85)', color: 'var(--gold-light)', padding: '4px 10px', borderRadius: 'var(--radius-full)', fontSize: '0.72rem', fontWeight: 700 }}>
+                    {item.category}
+                  </span>
                 </div>
-              </div>
-            </div>
+                <div style={{ padding: 24, flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontSize: '0.78rem', color: 'var(--gray-500)', marginBottom: 8, display: 'block' }}>{item.date} · {item.readTime}</span>
+                  <h3 style={{ fontSize: '1.2rem', color: 'var(--navy)', marginBottom: 10, lineHeight: 1.35 }}>{item.title}</h3>
+                  <p style={{ color: 'var(--gray-500)', fontSize: '0.9rem', lineHeight: 1.6, flex: 1, marginBottom: 18 }}>{item.excerpt}</p>
+                  
+                  {expandedId === item.id && (
+                    <div style={{ padding: '14px 0', borderTop: '1px solid var(--gray-100)', color: 'var(--charcoal)', fontSize: '0.92rem', lineHeight: 1.7 }}>
+                      {item.content}
+                    </div>
+                  )}
+
+                  <button
+                    onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}
+                    style={{ color: 'var(--gold-dark)', fontWeight: 700, fontSize: '0.88rem', textAlign: 'left', marginTop: 'auto', paddingTop: 12, borderTop: '1px solid var(--gray-100)' }}
+                  >
+                    {expandedId === item.id ? 'Close Details ▴' : 'Read Full Story →'}
+                  </button>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>

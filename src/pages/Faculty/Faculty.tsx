@@ -1,102 +1,109 @@
 import { useState } from 'react';
-import { useScrollReveal } from '../../hooks/useScrollReveal';
 import { Link } from 'react-router-dom';
-import './Faculty.css';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
+import { facultyMembers } from '../../data/schoolData';
 
-const departments = ['All', 'Mathematics', 'Sciences', 'Humanities', 'Languages', 'Arts', 'Physical Education', 'Technology'];
-
-const faculty = [
-  { name: 'Dr. Eleanor Marsh', role: 'Head of Mathematics', dept: 'Mathematics', edu: 'PhD Mathematics, MIT', exp: '18 yrs', initials: 'EM', color: '#1e4d9e', philosophy: 'Math is the language of the universe — I teach students to speak it fluently.' },
-  { name: 'Prof. Aisha Karimova', role: 'Senior Science Teacher', dept: 'Sciences', edu: 'MSc Chemistry, Cambridge', exp: '14 yrs', initials: 'AK', color: '#059669', philosophy: 'Every experiment is an adventure. Science is curiosity made systematic.' },
-  { name: 'Mr. Thomas Bennett', role: 'Head of English', dept: 'Humanities', edu: 'MA English Literature, Oxford', exp: '20 yrs', initials: 'TB', color: '#7c3aed', philosophy: 'Great writing begins with great reading. I help students find their voice.' },
-  { name: 'Dr. Yuki Tanaka', role: 'Physics & AP Coordinator', dept: 'Sciences', edu: 'PhD Physics, Tokyo University', exp: '16 yrs', initials: 'YT', color: '#0284c7', philosophy: 'Physics is everywhere. From sports to smartphones — I make it visible.' },
-  { name: 'Ms. Sophie Laurent', role: 'French & IB French Teacher', dept: 'Languages', edu: 'MA Linguistics, Sorbonne', exp: '11 yrs', initials: 'SL', color: '#dc2626', philosophy: 'Language learning is culture learning — and culture is empathy in practice.' },
-  { name: 'Dr. Marcus Chen', role: 'Head of Technology', dept: 'Technology', edu: 'PhD Computer Science, Stanford', exp: '13 yrs', initials: 'MC', color: '#c9a84c', philosophy: 'The best code solves real problems for real people — I teach students to build for impact.' },
-  { name: 'Ms. Priya Menon', role: 'Visual Arts Lead', dept: 'Arts', edu: 'MFA Fine Arts, RISD', exp: '9 yrs', initials: 'PM', color: '#e11d48', philosophy: 'Art is not talent — it is seeing the world differently and sharing that vision.' },
-  { name: 'Mr. James Okafor', role: 'History & TOK Teacher', dept: 'Humanities', edu: 'MA History, Yale University', exp: '15 yrs', initials: 'JO', color: '#b45309', philosophy: 'Understanding the past is the only reliable compass for navigating the future.' },
-  { name: 'Dr. Lena Hoffmann', role: 'Biology & IB Coordinator', dept: 'Sciences', edu: 'PhD Biology, Heidelberg', exp: '12 yrs', initials: 'LH', color: '#059669', philosophy: 'Biology is life itself. I want my students to see science as a living, breathing story.' },
-  { name: 'Mr. Ricardo Silva', role: 'Physical Education Head', dept: 'Physical Education', edu: 'BSc Sports Science, USP', exp: '10 yrs', initials: 'RS', color: '#1e4d9e', philosophy: 'Physical education is mental education. A fit body nurtures a resilient mind.' },
-  { name: 'Ms. Naomi Park', role: 'Music & Performing Arts', dept: 'Arts', edu: 'MM Performance, Juilliard', exp: '8 yrs', initials: 'NP', color: '#7c3aed', philosophy: 'Music builds confidence, discipline, and empathy — skills for all of life.' },
-  { name: 'Dr. Ivan Petrov', role: 'Advanced Mathematics', dept: 'Mathematics', edu: 'PhD Applied Math, Moscow', exp: '17 yrs', initials: 'IP', color: '#0284c7', philosophy: 'Every student who believes they cannot do math simply hasn\'t found the right approach — yet.' },
-];
+const departments = ['All Departments', 'Executive Leadership', 'Science & Technology', 'Mathematics', 'Humanities & Languages', 'Sports & Physical Education', 'Primary Division'];
 
 export default function Faculty() {
   useScrollReveal();
-  const [activeFilter, setActiveFilter] = useState('All');
+  const [activeDept, setActiveDept] = useState('All Departments');
 
-  const filtered = activeFilter === 'All' ? faculty : faculty.filter(f => f.dept === activeFilter);
+  const filtered = activeDept === 'All Departments'
+    ? facultyMembers
+    : facultyMembers.filter(f => f.department === activeDept);
 
   return (
-    <div className="faculty-page page-enter">
-      <section className="page-hero">
-        <div className="container page-hero-content">
-          <nav className="breadcrumb">
-            <Link to="/">Home</Link>
-            <span className="breadcrumb-sep">/</span>
-            <span>Faculty</span>
-          </nav>
-          <span className="section-label" style={{color:'var(--gold-light)'}}>Our Educators</span>
-          <h1>Meet Our Distinguished Faculty</h1>
-          <p>World-class educators from leading universities, bringing expertise, passion, and global perspective to every classroom.</p>
+    <div className="faculty-page">
+      {/* Hero Header */}
+      <section className="page-header">
+        <div className="container" style={{ textAlign: 'center' }}>
+          <span className="section-eyebrow" style={{ color: 'var(--gold-light)', justifyContent: 'center' }}>Master Educators</span>
+          <h1 className="page-title" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', color: '#ffffff', margin: '14px 0' }}>
+            Faculty & Academic Leadership
+          </h1>
+          <p className="page-subtitle" style={{ margin: '0 auto', maxWidth: 660 }}>
+            Over 110+ passionate, highly qualified master educators committed to nurturing intellectual brilliance, scientific discovery, and moral character.
+          </p>
         </div>
       </section>
 
-      {/* Faculty Stats */}
-      <section className="faculty-stats-bar">
+      {/* Stats Summary Strip */}
+      <section style={{ background: 'var(--navy-deep)', color: '#ffffff', padding: '36px 0', borderBottom: '2px solid var(--gold)' }}>
         <div className="container">
-          <div className="faculty-stats-inner">
-            {[
-              { num:'280+', label:'Faculty Members' },
-              { num:'45+', label:'Nationalities Represented' },
-              { num:'78%', label:'Hold Advanced Degrees' },
-              { num:'14 yrs', label:'Average Experience' },
-              { num:'95%', label:'IB/AP Certified' },
-            ].map((s, i) => (
-              <div key={i} className="faculty-stat">
-                <strong>{s.num}</strong>
-                <span>{s.label}</span>
-              </div>
-            ))}
+          <div className="stats-strip-grid">
+            <div className="stat-strip-item">
+              <div className="stat-strip-number" style={{ color: 'var(--gold-light)' }}>110+</div>
+              <div className="stat-strip-label" style={{ color: 'rgba(255,255,255,0.75)' }}>Full-Time Faculty Members</div>
+            </div>
+            <div className="stat-strip-item">
+              <div className="stat-strip-number" style={{ color: '#ffffff' }}>92%</div>
+              <div className="stat-strip-label" style={{ color: 'rgba(255,255,255,0.75)' }}>Hold Masters & Ph.D. Degrees</div>
+            </div>
+            <div className="stat-strip-item">
+              <div className="stat-strip-number" style={{ color: 'var(--gold-light)' }}>14+ Yrs</div>
+              <div className="stat-strip-label" style={{ color: 'rgba(255,255,255,0.75)' }}>Average Teaching Experience</div>
+            </div>
+            <div className="stat-strip-item">
+              <div className="stat-strip-number" style={{ color: '#059669' }}>1:20</div>
+              <div className="stat-strip-label" style={{ color: 'rgba(255,255,255,0.75)' }}>Student-Faculty Mentorship Ratio</div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Faculty Grid */}
-      <section className="section">
+      {/* Filterable Faculty Grid */}
+      <section className="section section-cream">
         <div className="container">
-          <div className="section-header centered reveal">
-            <span className="section-label">Our Team</span>
-            <h2 className="section-title">Faculty by Department</h2>
-          </div>
-          <div className="faculty-filters reveal">
-            {departments.map(dept => (
+          {/* Department Filter Tabs */}
+          <div className="reveal" style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center', marginBottom: 44 }}>
+            {departments.map(d => (
               <button
-                key={dept}
-                className={`filter-btn ${activeFilter === dept ? 'active' : ''}`}
-                onClick={() => setActiveFilter(dept)}
+                key={d}
+                onClick={() => setActiveDept(d)}
+                className={`program-tab-button ${activeDept === d ? 'active' : ''}`}
+                style={{ fontSize: '0.88rem', padding: '10px 20px' }}
               >
-                {dept}
+                {d}
               </button>
             ))}
           </div>
-          <div className="faculty-grid">
-            {filtered.map((f, i) => (
-              <div key={`${f.name}-${i}`} className="faculty-card reveal" style={{transitionDelay:`${(i % 6) * 0.08}s`}}>
-                <div className="faculty-card-top" style={{background:`linear-gradient(135deg, ${f.color}, ${f.color}bb)`}}>
-                  <div className="faculty-avatar">{f.initials}</div>
+
+          {/* Teachers Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 30 }}>
+            {filtered.map((teacher, idx) => (
+              <div key={teacher.id} className="card reveal" style={{ display: 'flex', flexDirection: 'column', background: '#ffffff', transitionDelay: `${idx * 70}ms` }}>
+                <div style={{ height: 240, overflow: 'hidden', position: 'relative', background: 'var(--navy)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  {teacher.image ? (
+                    <img src={teacher.image} alt={teacher.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : (
+                    <div style={{ width: 100, height: 100, borderRadius: '50%', background: 'var(--gold-gradient)', color: 'var(--navy-deep)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.2rem', fontWeight: 800 }}>
+                      {teacher.initial}
+                    </div>
+                  )}
+                  <span style={{ position: 'absolute', bottom: 12, left: 12, background: 'rgba(6, 13, 26, 0.9)', color: 'var(--gold-light)', padding: '4px 12px', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 700 }}>
+                    {teacher.experience} Exp.
+                  </span>
                 </div>
-                <div className="faculty-card-body">
-                  <h4>{f.name}</h4>
-                  <span className="faculty-role">{f.role}</span>
-                  <div className="faculty-meta">
-                    <span>🎓 {f.edu}</span>
-                    <span>⏱ {f.exp} Experience</span>
+
+                <div style={{ padding: 28, flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--gold-dark)', letterSpacing: 0.8 }}>{teacher.department}</span>
+                  <h3 style={{ fontSize: '1.25rem', color: 'var(--navy)', margin: '4px 0 2px' }}>{teacher.name}</h3>
+                  <p style={{ color: 'var(--navy-light)', fontWeight: 600, fontSize: '0.88rem', marginBottom: 12 }}>{teacher.role}</p>
+                  
+                  <p style={{ color: 'var(--gray-500)', fontSize: '0.9rem', lineHeight: 1.6, flex: 1, marginBottom: 16 }}>{teacher.bio}</p>
+
+                  <div style={{ padding: '12px 14px', background: 'var(--cream)', borderRadius: 8, marginBottom: 14, fontSize: '0.82rem', color: 'var(--navy)' }}>
+                    <strong>Qualification:</strong> {teacher.qualification}
                   </div>
-                  <div className="faculty-philosophy">
-                    <span className="philosophy-icon">"</span>
-                    <p>{f.philosophy}</p>
+
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 'auto' }}>
+                    {teacher.subjects.map((sub, si) => (
+                      <span key={si} style={{ background: 'var(--navy-soft)', color: 'var(--navy)', padding: '4px 10px', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 600 }}>
+                        {sub}
+                      </span>
+                    ))}
                   </div>
-                  <span className="faculty-dept-badge">{f.dept}</span>
                 </div>
               </div>
             ))}
@@ -104,57 +111,17 @@ export default function Faculty() {
         </div>
       </section>
 
-      {/* Teaching Philosophy */}
-      <section className="section section--gray">
+      {/* Careers Recruitment CTA */}
+      <section style={{ background: 'var(--navy)', color: '#ffffff', padding: '80px 0', textAlign: 'center' }}>
         <div className="container">
-          <div className="section-header centered reveal">
-            <span className="section-label">Our Approach</span>
-            <h2 className="section-title">Our Teaching Philosophy</h2>
-            <p className="section-subtitle">At Excelsior, our educators are more than content experts — they are mentors, coaches, and lifelong learners themselves.</p>
-          </div>
-          <div className="philosophy-grid">
-            {[
-              { icon:'🧠', title:'Student-Centered Learning', desc:'Every lesson is designed around student needs, learning styles, and real-world application.' },
-              { icon:'🔗', title:'Cross-Disciplinary Connections', desc:'Our faculty collaborates across subjects to create integrated, meaningful learning experiences.' },
-              { icon:'📊', title:'Data-Informed Instruction', desc:'Regular assessment data guides personalized support and targeted intervention for each student.' },
-              { icon:'🌱', title:'Growth Mindset Culture', desc:'We teach students that intelligence grows with effort, and mistakes are essential to learning.' },
-            ].map((p, i) => (
-              <div key={i} className="philosophy-card reveal" style={{transitionDelay:`${i * 0.12}s`}}>
-                <span>{p.icon}</span>
-                <h4>{p.title}</h4>
-                <p>{p.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Join Faculty CTA */}
-      <section className="section join-faculty-section">
-        <div className="container">
-          <div className="join-faculty-inner reveal">
-            <div>
-              <span className="section-label">Career Opportunities</span>
-              <h2 className="section-title">Join Our World-Class Team</h2>
-              <p style={{color:'var(--gray-600)', lineHeight:'1.9', marginBottom:'28px'}}>
-                We're always looking for passionate, qualified educators who share our commitment 
-                to academic excellence and student development. Explore current openings.
-              </p>
-              <Link to="/contact" className="btn btn-primary">View Open Positions</Link>
-            </div>
-            <div className="join-benefits">
-              {[
-                '🌍 International community of educators',
-                '📚 Continuous professional development',
-                '💰 Competitive compensation & benefits',
-                '🏠 Relocation support for international faculty',
-                '🎓 Free education for faculty children',
-                '✈️ Annual travel allowance',
-              ].map((b, i) => (
-                <div key={i} className="join-benefit">{b}</div>
-              ))}
-            </div>
-          </div>
+          <span className="section-eyebrow" style={{ color: 'var(--gold-light)', justifyContent: 'center' }}>Join Our Distinguished Faculty</span>
+          <h2 style={{ fontSize: '2.3rem', color: '#ffffff', marginBottom: 14 }}>
+            Interested in Teaching at Excelsior Apex?
+          </h2>
+          <p style={{ color: 'rgba(255,255,255,0.78)', maxWidth: 540, margin: '0 auto 28px' }}>
+            We provide competitive remuneration, institutional research grants, and a world-class teaching environment.
+          </p>
+          <Link to="/careers" className="btn btn-gold btn-lg">Explore Career Opportunities →</Link>
         </div>
       </section>
     </div>

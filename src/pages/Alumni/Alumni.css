@@ -1,0 +1,23 @@
+.alumni-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+}
+.alumni-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  box-shadow: var(--shadow-sm);
+  border-top: 4px solid var(--gold);
+}
+.alumni-quote {
+  font-size: 1.05rem;
+  color: var(--gray-700);
+  margin: 18px 0 24px;
+  line-height: 1.7;
+}
+.alumni-profile { display: flex; align-items: center; gap: 16px; }
+.alumni-avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
+.alumni-name { font-family: var(--font-serif); font-size: 1.15rem; color: var(--navy); margin-bottom: 2px; }
+.alumni-role, .alumni-org, .alumni-batch { font-size: 0.875rem; color: var(--gray-600); }
+.alumni-batch { color: var(--gold); font-weight: 700; margin-top: 2px; }

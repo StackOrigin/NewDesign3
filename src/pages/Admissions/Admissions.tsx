@@ -1,301 +1,235 @@
 import { useState } from 'react';
-import { useScrollReveal } from '../../hooks/useScrollReveal';
 import { Link } from 'react-router-dom';
-import './Admissions.css';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
+import { faqCategories } from '../../data/schoolData';
 
 const steps = [
-  { num: '01', title: 'Submit Inquiry', desc: 'Fill out our online inquiry form to receive a school information package and guide.' },
-  { num: '02', title: 'Campus Visit', desc: 'Schedule a personalized campus tour with our admissions counselors.' },
-  { num: '03', title: 'Online Application', desc: 'Complete the online application form with all required documents.' },
-  { num: '04', title: 'Assessment', desc: 'Students complete an academic assessment and interview with faculty.' },
-  { num: '05', title: 'Decision & Offer', desc: 'Receive your admission decision within 2–3 weeks.' },
-  { num: '06', title: 'Enrollment', desc: 'Accept your offer, pay enrollment fee, and secure your place.' },
+  { num: '01', title: 'Online Inquiry & Counseling', desc: 'Submit our streamlined digital inquiry form or visit our Jawalakhel admissions office to consult with senior academic counselors.', time: 'Step 1' },
+  { num: '02', title: 'Application & Portfolio Submission', desc: 'Submit the formal application form along with past 2 years terminal marksheets, birth certificate, and character certificate.', time: 'Step 2' },
+  { num: '03', title: 'Scholastic Aptitude Assessment', desc: 'Applicants sit for a diagnostic aptitude test assessing English literacy, mathematical reasoning, and logical problem-solving.', time: 'Step 3' },
+  { num: '04', title: 'Formal Interaction & Enrollment', desc: 'Successful scholars and their families attend a final alignment interview with the Principal, followed by welcome package issuance.', time: 'Step 4' },
 ];
 
 const feeStructure = [
-  { level: 'Primary (K–5)', annual: '$28,500', registration: '$2,500', activity: '$1,200' },
-  { level: 'Middle School (6–8)', annual: '$32,000', registration: '$2,500', activity: '$1,500' },
-  { level: 'High School (9–12)', annual: '$36,500', registration: '$2,500', activity: '$1,800' },
-  { level: 'IB Diploma (11–12)', annual: '$42,000', registration: '$2,500', activity: '$2,000' },
-];
-
-const scholarships = [
-  { name: 'Merit Excellence Award', amount: 'Up to 50% tuition', criteria: 'Academic excellence (GPA 4.0+)', deadline: 'March 31, 2025' },
-  { name: 'Global Leaders Scholarship', amount: 'Up to 30% tuition', criteria: 'Leadership & community service', deadline: 'April 30, 2025' },
-  { name: 'Arts & Athletics Grant', amount: 'Up to 25% tuition', criteria: 'Exceptional talent in arts/sports', deadline: 'April 30, 2025' },
-  { name: 'Need-Based Financial Aid', amount: 'Based on assessment', criteria: 'Demonstrated financial need', deadline: 'Rolling basis' },
-];
-
-const faqs = [
-  { q: 'What is the age requirement for each grade?', a: 'Students must turn the grade-appropriate age by September 1st of the enrollment year. Kindergarten requires age 5, Grade 1 requires age 6, and so forth.' },
-  { q: 'Do you accept mid-year transfers?', a: 'Yes, we consider mid-year transfers based on seat availability. Contact our admissions office for current openings and the transfer process.' },
-  { q: 'Is an English proficiency test required?', a: 'Non-native English speakers must demonstrate English proficiency through TOEFL Jr, IELTS, or an internal language assessment conducted during the admission process.' },
-  { q: 'What is the student-to-teacher ratio?', a: 'We maintain a 12:1 student-to-teacher ratio across all grades to ensure personalized attention and small-group learning.' },
-  { q: 'Are boarding facilities available?', a: 'Yes, we offer fully supervised boarding accommodation for international students from Grade 7 onwards. Boarding fees are separate from tuition.' },
-  { q: 'How does the scholarship application work?', a: 'Scholarships are awarded based on merit, talent, or financial need. Separate scholarship applications must be submitted along with the main admission application.' },
+  { level: 'Early Childhood & Montessori', admission: 'Rs. 18,000', monthly: 'Rs. 7,500', term: 'Rs. 4,500', includes: ['Montessori materials', 'Midday organic snacks', 'Sensory activities'] },
+  { level: 'Primary School (Grade 1–5)', admission: 'Rs. 22,000', monthly: 'Rs. 9,200', term: 'Rs. 5,500', includes: ['Robotics lab access', 'Visual arts supplies', 'Sports coaching'] },
+  { level: 'Lower Secondary (Grade 6–8)', admission: 'Rs. 25,000', monthly: 'Rs. 10,800', term: 'Rs. 6,500', includes: ['Science practical kits', 'MUN & debating club', 'ICT workstations'] },
+  { level: 'Secondary (SEE Board 9–10)', admission: 'Rs. 28,000', monthly: 'Rs. 12,500', term: 'Rs. 7,500', includes: ['SEE topper bootcamps', 'Mock board tests', 'Career psychometrics'] },
+  { level: 'Higher Secondary (+2 Science)', admission: 'Rs. 32,000', monthly: 'Rs. 14,000', term: 'Rs. 8,500', includes: ['Medical/Engg entrance coaching', 'Research laboratory access', 'College counseling'] },
+  { level: 'Higher Secondary (+2 Management)', admission: 'Rs. 30,000', monthly: 'Rs. 13,000', term: 'Rs. 8,000', includes: ['FinTech simulations', 'CA foundation modules', 'Corporate mentorship'] },
 ];
 
 export default function Admissions() {
   useScrollReveal();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [formData, setFormData] = useState({
-    studentName: '', grade: '', dob: '', parentName: '', email: '', phone: '', nationality: '', message: ''
-  });
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert('Application submitted! Our admissions team will contact you within 2 business days.');
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 5000);
   };
 
   return (
-    <div className="admissions-page page-enter">
-      <section className="page-hero">
-        <div className="container page-hero-content">
-          <nav className="breadcrumb">
-            <Link to="/">Home</Link>
-            <span className="breadcrumb-sep">/</span>
-            <span>Admissions</span>
-          </nav>
-          <span className="section-label" style={{color:'var(--gold-light)'}}>Join Our Community</span>
-          <h1>Begin Your Excelsior Journey</h1>
-          <p>We're looking for curious, passionate, and driven students to join our extraordinary community.</p>
+    <div className="admissions-page">
+      {/* Hero Header */}
+      <section className="page-header">
+        <div className="container" style={{ textAlign: 'center' }}>
+          <span className="section-eyebrow" style={{ color: 'var(--gold-light)', justifyContent: 'center' }}>Academic Session 2025–26</span>
+          <h1 className="page-title" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', color: '#ffffff', margin: '14px 0' }}>
+            Admissions & Enrollment
+          </h1>
+          <p className="page-subtitle" style={{ margin: '0 auto', maxWidth: 660 }}>
+            Join a prestigious community of learners, visionary thinkers, and ethical leaders. Explore our transparent entry process and fee schedule.
+          </p>
         </div>
       </section>
 
-      {/* Admission Process */}
-      <section className="section">
+      {/* 4-Step Process Strip */}
+      <section className="section section-cream">
         <div className="container">
           <div className="section-header centered reveal">
-            <span className="section-label">How to Apply</span>
-            <h2 className="section-title">Admission Process</h2>
-            <p className="section-subtitle">Our streamlined six-step process ensures a smooth and transparent experience for every family.</p>
+            <span className="section-eyebrow">The Journey to Excelsior</span>
+            <h2 className="section-title">Four-Step Admission Process</h2>
+            <p className="section-subtitle">We make enrolling your child an inspiring, transparent, and supportive journey.</p>
           </div>
-          <div className="steps-grid">
-            {steps.map((step, i) => (
-              <div key={i} className="step-card reveal" style={{transitionDelay:`${i * 0.1}s`}}>
-                <div className="step-number">{step.num}</div>
-                <div className="step-connector"/>
-                <h4>{step.title}</h4>
-                <p>{step.desc}</p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 28 }}>
+            {steps.map((st, i) => (
+              <div key={i} className="card reveal" style={{ padding: 36, position: 'relative', background: '#ffffff', transitionDelay: `${i * 80}ms` }}>
+                <div style={{ position: 'absolute', top: -14, left: 28, background: 'var(--gold-gradient)', color: 'var(--navy-deep)', fontWeight: 800, padding: '4px 14px', borderRadius: 'var(--radius-full)', fontSize: '0.82rem', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
+                  {st.num}
+                </div>
+                <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--gold-dark)', textTransform: 'uppercase', display: 'block', marginTop: 8 }}>{st.time}</span>
+                <h3 style={{ fontSize: '1.25rem', color: 'var(--navy)', margin: '8px 0 10px' }}>{st.title}</h3>
+                <p style={{ color: 'var(--gray-500)', fontSize: '0.92rem', lineHeight: 1.65 }}>{st.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Eligibility & Documents */}
-      <section className="section section--gray">
+      {/* Online Application Form & Checklist */}
+      <section className="section section-white">
         <div className="container">
-          <div className="eligibility-grid">
-            <div className="eligibility-box reveal-left">
-              <h3>Eligibility Criteria</h3>
-              <div className="gold-divider"/>
-              <ul className="eligibility-list">
-                {[
-                  'Age-appropriate grade placement (verified by September 1)',
-                  'Previous school academic records (minimum B average)',
-                  'Satisfactory behavior and conduct record',
-                  'English proficiency (non-native speakers)',
-                  'Successful completion of academic assessment',
-                  'Parent/guardian interview participation',
-                  'Completion of all application requirements',
-                ].map((item, i) => (
-                  <li key={i}>
-                    <span className="check-icon">✓</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="documents-box reveal-right">
-              <h3>Required Documents</h3>
-              <div className="gold-divider"/>
-              <div className="docs-list">
-                {[
-                  { icon:'📄', doc:'Completed Application Form', note:'Online form — all sections required' },
-                  { icon:'📋', doc:'Academic Transcripts', note:'Last 2 years from previous school' },
-                  { icon:'🪪', doc:'Birth Certificate / Passport Copy', note:'For age verification' },
-                  { icon:'📝', doc:'Teacher Recommendation Letters', note:'Two letters from subject teachers' },
-                  { icon:'🗣️', doc:'English Proficiency Report', note:'If applicable — TOEFL Jr. or equivalent' },
-                  { icon:'📸', doc:'Passport-Size Photographs', note:'4 recent photos, plain background' },
-                  { icon:'💊', doc:'Medical & Immunization Records', note:'Required before enrollment' },
-                ].map((d, i) => (
-                  <div key={i} className="doc-item">
-                    <span>{d.icon}</span>
-                    <div>
-                      <strong>{d.doc}</strong>
-                      <span>{d.note}</span>
-                    </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: 50, alignItems: 'start' }}>
+            <div className="card reveal" style={{ padding: 44, boxShadow: 'var(--shadow-md)', borderTop: '5px solid var(--gold)' }}>
+              <span className="section-eyebrow">Direct Portal</span>
+              <h2 style={{ fontSize: '1.8rem', color: 'var(--navy)', marginBottom: 8 }}>Online Admission Inquiry</h2>
+              <p style={{ color: 'var(--gray-500)', fontSize: '0.92rem', marginBottom: 24 }}>
+                Fill out the form below to reserve an entrance examination seat and receive our digital prospectus.
+              </p>
+
+              <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 16 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: 'var(--navy)', marginBottom: 6 }}>Student Full Name *</label>
+                    <input type="text" required placeholder="e.g. Aavash Sharma" style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid var(--gray-300)', outline: 'none' }} />
                   </div>
-                ))}
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: 'var(--navy)', marginBottom: 6 }}>Applying For Grade *</label>
+                    <select required style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid var(--gray-300)', outline: 'none', background: '#fff' }}>
+                      <option value="">Select Grade</option>
+                      <option>Pre-Primary / Montessori</option>
+                      <option>Grade 1 – 5 (Primary)</option>
+                      <option>Grade 6 – 8 (Lower Secondary)</option>
+                      <option>Grade 9 – 10 (Secondary SEE)</option>
+                      <option>Grade 11 (+2 Science)</option>
+                      <option>Grade 11 (+2 Management)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: 'var(--navy)', marginBottom: 6 }}>Parent / Guardian Name *</label>
+                    <input type="text" required placeholder="e.g. Dr. Ramesh Sharma" style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid var(--gray-300)', outline: 'none' }} />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: 'var(--navy)', marginBottom: 6 }}>Contact Phone Number *</label>
+                    <input type="tel" required placeholder="e.g. 98XXXXXXXX" style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid var(--gray-300)', outline: 'none' }} />
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: 'var(--navy)', marginBottom: 6 }}>Email Address *</label>
+                  <input type="email" required placeholder="name@example.com" style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid var(--gray-300)', outline: 'none' }} />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: 'var(--navy)', marginBottom: 6 }}>Previous School & Location</label>
+                  <input type="text" placeholder="Name of previous academic institution" style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid var(--gray-300)', outline: 'none' }} />
+                </div>
+
+                <button type="submit" className="btn btn-primary" style={{ marginTop: 8, width: '100%' }}>
+                  Submit Admission Application →
+                </button>
+              </form>
+
+              {submitted && (
+                <div style={{ marginTop: 18, padding: '14px 20px', borderRadius: 8, background: '#059669', color: '#fff', fontWeight: 600, fontSize: '0.92rem' }}>
+                  Thank you! Your application has been registered. Our admissions counselor will contact you within 24 hours.
+                </div>
+              )}
+            </div>
+
+            {/* Document Requirements Checklist */}
+            <div className="reveal" style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+              <div className="card" style={{ padding: 36, background: 'var(--navy)', color: '#ffffff' }}>
+                <span className="section-eyebrow" style={{ color: 'var(--gold-light)' }}>Preparation Checklist</span>
+                <h3 style={{ color: '#ffffff', fontSize: '1.4rem', marginBottom: 16 }}>Required Enrollment Documents</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                  {[
+                    'Birth Certificate (Original + 2 Photocopies)',
+                    'Previous School Progress Marksheets (Last 2 Years)',
+                    'Character Certificate & Transfer Certificate (TC)',
+                    'Citizenship Certificate Photocopy of Parents',
+                    '4 Recent Passport-sized Student Photographs',
+                    'Medical Fitness & Immunization Record',
+                  ].map((doc, di) => (
+                    <div key={di} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: '0.92rem', color: 'rgba(255,255,255,0.85)' }}>
+                      <span style={{ color: 'var(--gold-light)', fontWeight: 800 }}>✓</span>
+                      <span>{doc}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="card" style={{ padding: 30, background: 'var(--gold-pale)', border: '1px solid var(--gold)' }}>
+                <h4 style={{ color: 'var(--navy)', fontSize: '1.15rem', marginBottom: 8 }}>Applying for Merit Scholarships?</h4>
+                <p style={{ color: 'var(--charcoal)', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: 16 }}>
+                  Candidates scoring GPA 3.85+ or holding national athletic honors are eligible for up to 100% tuition waivers.
+                </p>
+                <Link to="/scholarships" className="btn btn-navy btn-sm">Explore Scholarship Guidelines →</Link>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Fee Structure */}
-      <section className="section" id="fees">
+      {/* Transparent Fee Structure */}
+      <section className="section section-cream">
         <div className="container">
           <div className="section-header centered reveal">
-            <span className="section-label">Investment in Excellence</span>
-            <h2 className="section-title">Fee Structure 2025–2026</h2>
-            <p className="section-subtitle">All fees are in USD. Payment plans are available. Contact our finance office for details.</p>
+            <span className="section-eyebrow">Transparent Value</span>
+            <h2 className="section-title">Institutional Fee Schedule (2025–26)</h2>
+            <p className="section-subtitle">Competitive, all-inclusive academic tuition with quarterly installment payment flexibility.</p>
           </div>
-          <div className="fee-table-wrap reveal">
-            <table className="fee-table">
+
+          <div className="card reveal" style={{ padding: 0, overflowX: 'auto', borderRadius: 'var(--radius-lg)' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: 680 }}>
               <thead>
-                <tr>
-                  <th>Program Level</th>
-                  <th>Annual Tuition</th>
-                  <th>Registration Fee</th>
-                  <th>Activity Fee</th>
-                  <th>Total</th>
+                <tr style={{ background: 'var(--navy)', color: '#ffffff' }}>
+                  <th style={{ padding: '20px 24px', fontWeight: 700 }}>Academic Stage</th>
+                  <th style={{ padding: '20px 20px', fontWeight: 700 }}>One-Time Admission</th>
+                  <th style={{ padding: '20px 20px', fontWeight: 700 }}>Monthly Tuition</th>
+                  <th style={{ padding: '20px 20px', fontWeight: 700 }}>Term Exam Fee</th>
+                  <th style={{ padding: '20px 24px', fontWeight: 700 }}>Included Privileges</th>
                 </tr>
               </thead>
               <tbody>
-                {feeStructure.map((f, i) => (
-                  <tr key={i}>
-                    <td className="fee-level">{f.level}</td>
-                    <td>{f.annual}</td>
-                    <td>{f.registration}</td>
-                    <td>{f.activity}</td>
-                    <td className="fee-total">
-                      ${(parseInt(f.annual.replace(/\D/g,'')) + parseInt(f.registration.replace(/\D/g,'')) + parseInt(f.activity.replace(/\D/g,''))).toLocaleString()}
+                {feeStructure.map((row, i) => (
+                  <tr key={i} style={{ borderBottom: '1px solid var(--gray-100)', background: i % 2 === 0 ? '#ffffff' : 'var(--cream)' }}>
+                    <td style={{ padding: '18px 24px', fontWeight: 700, color: 'var(--navy)' }}>{row.level}</td>
+                    <td style={{ padding: '18px 20px', color: 'var(--gold-dark)', fontWeight: 800 }}>{row.admission}</td>
+                    <td style={{ padding: '18px 20px', color: 'var(--navy-light)', fontWeight: 700 }}>{row.monthly}</td>
+                    <td style={{ padding: '18px 20px', color: 'var(--gray-500)' }}>{row.term}</td>
+                    <td style={{ padding: '18px 24px' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                        {row.includes.map((inc, ii) => (
+                          <span key={ii} style={{ fontSize: '0.82rem', color: 'var(--gray-500)' }}>• {inc}</span>
+                        ))}
+                      </div>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <p className="fee-note reveal">* Fees are subject to annual review. Additional fees may apply for boarding, transportation, and optional programs. Sibling discounts available.</p>
         </div>
       </section>
 
-      {/* Scholarships */}
-      <section className="section section--gray" id="scholarships">
-        <div className="container">
+      {/* FAQ Accordion */}
+      <section className="section section-white">
+        <div className="container" style={{ maxWidth: 880 }}>
           <div className="section-header centered reveal">
-            <span className="section-label">Financial Support</span>
-            <h2 className="section-title">Scholarships & Financial Aid</h2>
-            <p className="section-subtitle">We believe exceptional students should have access to an exceptional education regardless of financial circumstances.</p>
+            <span className="section-eyebrow">Got Questions?</span>
+            <h2 className="section-title">Admissions FAQ</h2>
           </div>
-          <div className="scholarships-grid">
-            {scholarships.map((s, i) => (
-              <div key={i} className="scholarship-card reveal" style={{transitionDelay:`${i * 0.12}s`}}>
-                <div className="scholarship-badge">🏅</div>
-                <h4>{s.name}</h4>
-                <div className="scholarship-amount">{s.amount}</div>
-                <div className="scholarship-detail">
-                  <span>📋 Criteria:</span> {s.criteria}
-                </div>
-                <div className="scholarship-detail">
-                  <span>📅 Deadline:</span> {s.deadline}
-                </div>
-                <Link to="#apply" className="btn btn-outline-navy btn-sm" style={{marginTop:'12px'}}>Apply for Scholarship</Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Application Form */}
-      <section className="section" id="apply">
-        <div className="container">
-          <div className="section-header centered reveal">
-            <span className="section-label">Ready to Apply?</span>
-            <h2 className="section-title">Online Application Form</h2>
-            <p className="section-subtitle">Complete the form below and our admissions team will be in touch within 2 business days.</p>
-          </div>
-          <div className="application-form-wrap reveal">
-            <form className="application-form" onSubmit={handleSubmit}>
-              <div className="form-section-title">Student Information</div>
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Student Full Name *</label>
-                  <input type="text" placeholder="Enter student's full name" required
-                    value={formData.studentName} onChange={e => setFormData({...formData, studentName: e.target.value})} />
-                </div>
-                <div className="form-group">
-                  <label>Applying for Grade *</label>
-                  <select required value={formData.grade} onChange={e => setFormData({...formData, grade: e.target.value})}>
-                    <option value="">Select Grade</option>
-                    {['Kindergarten','Grade 1','Grade 2','Grade 3','Grade 4','Grade 5','Grade 6','Grade 7','Grade 8','Grade 9','Grade 10','Grade 11','Grade 12'].map(g => (
-                      <option key={g} value={g}>{g}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Date of Birth *</label>
-                  <input type="date" required value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} />
-                </div>
-                <div className="form-group">
-                  <label>Nationality *</label>
-                  <input type="text" placeholder="Student's nationality" required
-                    value={formData.nationality} onChange={e => setFormData({...formData, nationality: e.target.value})} />
-                </div>
-              </div>
-
-              <div className="form-section-title">Parent / Guardian Information</div>
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Parent/Guardian Full Name *</label>
-                  <input type="text" placeholder="Parent or guardian name" required
-                    value={formData.parentName} onChange={e => setFormData({...formData, parentName: e.target.value})} />
-                </div>
-                <div className="form-group">
-                  <label>Email Address *</label>
-                  <input type="email" placeholder="your@email.com" required
-                    value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
-                </div>
-              </div>
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Phone Number *</label>
-                  <input type="tel" placeholder="+1 (000) 000-0000" required
-                    value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
-                </div>
-              </div>
-
-              <div className="form-group full-width">
-                <label>Additional Information / Message</label>
-                <textarea placeholder="Tell us about your child, any special needs, or questions..." rows={4}
-                  value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} />
-              </div>
-
-              <div className="form-check">
-                <input type="checkbox" id="terms" required />
-                <label htmlFor="terms">I agree to the terms and conditions and privacy policy of Excelsior International Academy.</label>
-              </div>
-
-              <button type="submit" className="btn btn-primary btn-lg form-submit">
-                Submit Application
-                <svg viewBox="0 0 20 20" fill="currentColor" width="18"><path d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/></svg>
-              </button>
-            </form>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="section section--gray">
-        <div className="container">
-          <div className="section-header centered reveal">
-            <span className="section-label">Common Questions</span>
-            <h2 className="section-title">Frequently Asked Questions</h2>
-          </div>
-          <div className="faq-list">
-            {faqs.map((faq, i) => (
-              <div key={i} className={`faq-item reveal ${openFaq === i ? 'open' : ''}`} style={{transitionDelay:`${i * 0.08}s`}}>
-                <button className="faq-question" onClick={() => setOpenFaq(openFaq === i ? null : i)}>
-                  <span>{faq.q}</span>
-                  <span className="faq-icon">{openFaq === i ? '−' : '+'}</span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            {faqCategories[0].questions.map((faq, idx) => (
+              <div key={idx} className="card reveal" style={{ padding: 0, overflow: 'hidden' }}>
+                <button
+                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                  style={{ width: '100%', padding: '20px 24px', textAlign: 'left', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 700, color: 'var(--navy)', fontSize: '1.02rem', background: openFaq === idx ? 'var(--navy-soft)' : '#fff' }}
+                >
+                  {faq.q}
+                  <span style={{ transform: openFaq === idx ? 'rotate(180deg)' : 'none', transition: 'transform 0.25s', color: 'var(--gold)' }}>▼</span>
                 </button>
-                {openFaq === i && (
-                  <div className="faq-answer">
-                    <p>{faq.a}</p>
+                {openFaq === idx && (
+                  <div style={{ padding: '20px 24px', color: 'var(--gray-700)', lineHeight: 1.75, borderTop: '1px solid var(--gray-100)' }}>
+                    {faq.a}
                   </div>
                 )}
               </div>

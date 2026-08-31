@@ -1,0 +1,15 @@
+.tour-stage { background: var(--white); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-md); max-width: 1000px; margin: 0 auto 40px; }
+.tour-image-wrap { position: relative; height: 500px; }
+.tour-image { width: 100%; height: 100%; object-fit: cover; }
+.tour-controls { position: absolute; inset: 0; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+.tour-btn { width: 48px; height: 48px; border-radius: 50%; border: none; background: rgba(255,255,255,0.85); color: var(--navy); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.tour-info { padding: 30px; }
+.tour-counter { display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--gold-dark); font-weight: 700; margin-bottom: 12px; }
+.tour-title { font-family: var(--font-serif); color: var(--navy); margin-bottom: 12px; }
+.tour-desc { color: var(--gray-600); line-height: 1.7; }
+.tour-thumbs { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; max-width: 1000px; margin: 0 auto; }
+.tour-thumb { background: var(--white); border: 2px solid transparent; border-radius: var(--radius-md); overflow: hidden; cursor: pointer; text-align: left; padding: 0; box-shadow: var(--shadow-sm); }
+.tour-thumb.active { border-color: var(--gold); }
+.tour-thumb img { width: 100%; height: 100px; object-fit: cover; }
+.tour-thumb span { display: block; padding: 10px 12px; font-size: 0.8rem; font-weight: 600; color: var(--navy); }
+@media (max-width: 768px) { .tour-image-wrap { height: 280px; } }

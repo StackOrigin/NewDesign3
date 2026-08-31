@@ -1,183 +1,110 @@
-import { useScrollReveal } from '../../hooks/useScrollReveal';
 import { Link } from 'react-router-dom';
-import './Campus.css';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
+import { campusFacilities } from '../../data/schoolData';
 
-const facilities = [
-  {
-    icon: '🖥️',
-    title: 'Smart Classrooms',
-    desc: '85 fully equipped smart classrooms with 4K interactive displays, surround sound, and AI-assisted teaching tools for dynamic, engaging lessons.',
-    features: ['4K Interactive Displays', 'AI Learning Assistants', 'Collaborative Workstations', 'Video Conferencing Ready'],
-    img: 'https://images.pexels.com/photos/8423119/pexels-photo-8423119.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-  },
-  {
-    icon: '🔬',
-    title: 'Science Laboratories',
-    desc: '12 state-of-the-art labs covering biology, chemistry, physics, and environmental science with professional-grade equipment and safety systems.',
-    features: ['Professional Equipment', 'Fume Hoods & Safety Systems', 'Digital Microscopes', 'Research-Grade Materials'],
-    img: 'https://images.pexels.com/photos/34162713/pexels-photo-34162713.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-  },
-  {
-    icon: '💻',
-    title: 'Computer Labs',
-    desc: '6 computer labs with 300+ workstations, high-speed fiber internet, and industry-standard software for coding, design, and digital creation.',
-    features: ['High-Performance Workstations', '1Gbps Fiber Connection', 'Industry Software Suite', '3D Printing Studio'],
-    img: 'https://images.pexels.com/photos/37758635/pexels-photo-37758635.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-  },
-  {
-    icon: '📚',
-    title: 'Library & Media Center',
-    desc: 'A magnificent two-story library with 80,000+ books, digital resources, reading lounges, research rooms, and a dedicated media production studio.',
-    features: ['80,000+ Physical Books', 'Digital Resource Access', 'Research Rooms', 'Media Production Studio'],
-    img: 'https://images.pexels.com/photos/9489917/pexels-photo-9489917.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-  },
-  {
-    icon: '⚽',
-    title: 'Sports Complex',
-    desc: 'Olympic-standard facilities including a 400m track, FIFA-certified turf, aquatic center, tennis courts, gymnasium, and indoor sports halls.',
-    features: ['Olympic 400m Track', 'FIFA Certified Turf', '50m Aquatic Center', 'Indoor Gymnasium'],
-    img: 'https://images.pexels.com/photos/36393288/pexels-photo-36393288.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-  },
-  {
-    icon: '🎭',
-    title: 'Performing Arts Center',
-    desc: 'A 1,200-seat professional auditorium, drama studios, music practice rooms, recording studio, and black box theater for creative expression.',
-    features: ['1,200-Seat Auditorium', 'Professional Recording Studio', 'Drama & Dance Studios', 'Black Box Theater'],
-    img: 'https://images.pexels.com/photos/8199168/pexels-photo-8199168.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-  },
-  {
-    icon: '🍽️',
-    title: 'Cafeteria & Dining',
-    desc: 'A modern, spacious dining hall serving international cuisines prepared by qualified chefs, with nutrition-conscious menus for every dietary need.',
-    features: ['International Cuisine Options', 'Certified Nutritional Menus', 'Allergen-Free Stations', 'Student Dining Lounge'],
-    img: 'https://images.pexels.com/photos/37811241/pexels-photo-37811241.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-  },
-  {
-    icon: '🚌',
-    title: 'Transportation',
-    desc: 'Safe, GPS-tracked school buses covering major routes with trained drivers, attendants, and real-time tracking accessible to parents.',
-    features: ['GPS-Tracked Buses', 'Trained Drivers & Attendants', 'Parent Tracking App', 'Air-Conditioned Fleet'],
-    img: 'https://images.pexels.com/photos/7406300/pexels-photo-7406300.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-  },
-  {
-    icon: '🏠',
-    title: 'Boarding Facilities',
-    desc: 'Premium on-campus boarding for international students with fully furnished rooms, 24/7 supervision, counseling support, and a homelike environment.',
-    features: ['Fully Furnished Rooms', '24/7 Supervision', 'Wellness & Counseling', 'Common Room & Recreation'],
-    img: 'https://images.pexels.com/photos/32641542/pexels-photo-32641542.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600',
-  },
-];
-
-const campusStats = [
-  { number: '45', unit: 'Acres', label: 'Campus Area' },
-  { number: '28', unit: 'Buildings', label: 'On Campus' },
-  { number: '85', unit: 'Rooms', label: 'Smart Classrooms' },
-  { number: '12', unit: 'Labs', label: 'Science Labs' },
+const safetyFeatures = [
+  { number: '01', title: '24/7 Security & CCTV Surveillance', desc: 'Over 120 high-definition IP cameras covering all gates, corridors, auditoriums, and playground perimeters with professional security guards.' },
+  { number: '02', title: 'GPS-Monitored Transport Fleet', desc: 'Fleet of 25+ air-conditioned buses equipped with speed governors, female care attendants, first-aid kits, and live GPS map tracking for parents.' },
+  { number: '03', title: 'Full-Time Medical Infirmary', desc: 'Staffed by certified registered nurses and emergency medical equipment, with formal ties to nearby tertiary hospitals.' },
+  { number: '04', title: 'Nutritious Organic Dining Hall', desc: 'Hygienic multi-cuisine dining preparing balanced, nutritionist-vetted hot meals, purified RO drinking water stations, and zero-junk policy.' },
+  { number: '05', title: 'Solar Clean Energy & Power Backup', desc: 'Environmentally sustainable campus powered by 100kW rooftop solar panels and uninterrupted generator backups.' },
+  { number: '06', title: 'Botanical Gardens & Open Plazas', desc: 'Lush greenery, peaceful open-air reading gardens, and earthquake-resilient architectural structures.' }
 ];
 
 export default function Campus() {
   useScrollReveal();
 
   return (
-    <div className="campus-page page-enter">
-      <section className="page-hero">
-        <div className="container page-hero-content">
-          <nav className="breadcrumb">
-            <Link to="/">Home</Link>
-            <span className="breadcrumb-sep">/</span>
-            <span>Campus & Facilities</span>
-          </nav>
-          <span className="section-label" style={{color:'var(--gold-light)'}}>Our Campus</span>
-          <h1>World-Class Facilities</h1>
-          <p>A 45-acre campus designed to inspire curiosity, creativity, and academic achievement at every turn.</p>
+    <div className="campus-page">
+      {/* Hero Header */}
+      <section className="page-header">
+        <div className="container" style={{ textAlign: 'center' }}>
+          <span className="section-eyebrow" style={{ color: 'var(--gold-light)', justifyContent: 'center' }}>Infrastructure & Environment</span>
+          <h1 className="page-title" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', color: '#ffffff', margin: '14px 0' }}>
+            Our 15-Ropani World-Class Campus
+          </h1>
+          <p className="page-subtitle" style={{ margin: '0 auto', maxWidth: 660 }}>
+            A serene academic sanctuary in Jawalakhel, Lalitpur, meticulously engineered for scientific discovery, athletic mastery, and student wellbeing.
+          </p>
         </div>
       </section>
 
-      {/* Campus Stats */}
-      <section className="campus-stats-bar">
-        <div className="container">
-          <div className="campus-stats-grid">
-            {campusStats.map((s, i) => (
-              <div key={i} className="campus-stat-item">
-                <span className="campus-stat-num">{s.number}</span>
-                <span className="campus-stat-unit">{s.unit}</span>
-                <span className="campus-stat-label">{s.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Campus Overview */}
-      <section className="section">
+      {/* Flagship Facilities Grid */}
+      <section className="section section-cream">
         <div className="container">
           <div className="section-header centered reveal">
-            <span className="section-label">Premium Facilities</span>
-            <h2 className="section-title">Everything a Student Needs to Thrive</h2>
-            <p className="section-subtitle">
-              Every facility at Excelsior is designed with student success in mind — 
-              from cutting-edge labs to inspiring creative spaces and world-class athletics.
-            </p>
+            <span className="section-eyebrow">Academic & Co-Curricular Spaces</span>
+            <h2 className="section-title">Built for Extraordinary Learning</h2>
+            <p className="section-subtitle">Take a closer look at our specialized pavilions, laboratories, libraries, and athletic grounds.</p>
           </div>
-          <div className="facilities-detail-grid">
-            {facilities.map((f, i) => (
-              <div key={i} className={`facility-detail-card reveal ${i % 2 !== 0 ? 'reverse' : ''}`}>
-                <div className="facility-detail-img">
-                  <img src={f.img} alt={f.title} loading="lazy"/>
-                  <div className="facility-detail-overlay">
-                    <span className="facility-detail-icon">{f.icon}</span>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 28 }}>
+            {campusFacilities.map((f, i) => (
+              <div key={f.id} className="card reveal" style={{ overflow: 'hidden', padding: 0, transitionDelay: `${i * 70}ms` }}>
+                <div style={{ height: 230, position: 'relative', overflow: 'hidden' }}>
+                  <img
+                    src={f.image}
+                    alt={f.title}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                  <div style={{
+                    position: 'absolute', top: 14, right: 14,
+                    padding: '4px 12px', borderRadius: 'var(--radius-full)',
+                    background: 'rgba(6, 13, 26, 0.85)', backdropFilter: 'blur(6px)',
+                    color: 'var(--gold-light)', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.5
+                  }}>
+                    Facility 0{i + 1}
                   </div>
                 </div>
-                <div className="facility-detail-info">
-                  <h3>{f.title}</h3>
-                  <p>{f.desc}</p>
-                  <div className="facility-features">
-                    {f.features.map((feat, j) => (
-                      <div key={j} className="facility-feature">
-                        <span>✓</span> {feat}
-                      </div>
-                    ))}
-                  </div>
+                <div style={{ padding: 28 }}>
+                  <h3 style={{ fontSize: '1.3rem', color: 'var(--navy)', marginBottom: 10 }}>{f.title}</h3>
+                  <p style={{ color: 'var(--gray-500)', fontSize: '0.92rem', lineHeight: 1.65 }}>{f.desc}</p>
                 </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ textAlign: 'center', marginTop: 48 }}>
+            <Link to="/virtual-tour" className="btn btn-primary btn-lg">Experience 360° Virtual Tour →</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Safety & Student Welfare */}
+      <section className="section section-white">
+        <div className="container">
+          <div className="section-header centered reveal">
+            <span className="section-eyebrow">Student Wellbeing</span>
+            <h2 className="section-title">Safety, Health & Campus Care</h2>
+            <p className="section-subtitle">A secure, nurturing haven where parents enjoy complete peace of mind.</p>
+          </div>
+
+          <div className="grid-3">
+            {safetyFeatures.map((s, i) => (
+              <div key={i} className="card reveal" style={{ padding: 32, transitionDelay: `${i * 70}ms` }}>
+                <div style={{ fontSize: '1.2rem', fontWeight: 800, fontFamily: 'var(--font-serif)', color: 'var(--gold)', marginBottom: 14 }}>
+                  {s.number}
+                </div>
+                <h3 style={{ fontSize: '1.2rem', color: 'var(--navy)', marginBottom: 10 }}>{s.title}</h3>
+                <p style={{ color: 'var(--gray-500)', fontSize: '0.92rem', lineHeight: 1.65 }}>{s.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Virtual Tour CTA */}
-      <section className="section section--navy">
+      {/* Visit Campus CTA */}
+      <section style={{ background: 'var(--navy)', color: '#ffffff', padding: '90px 0', textAlign: 'center' }}>
         <div className="container">
-          <div className="virtual-tour-inner">
-            <div className="reveal-left">
-              <span className="section-label" style={{color:'var(--gold-light)'}}>See it for Yourself</span>
-              <h2 className="section-title" style={{color:'var(--white)'}}>Schedule a Campus Visit</h2>
-              <div className="gold-divider"/>
-              <p style={{color:'rgba(255,255,255,0.75)', lineHeight:'1.9', marginBottom:'28px'}}>
-                Nothing compares to experiencing the Excelsior campus in person. 
-                Schedule a guided tour with our admissions team and see why families 
-                from around the world choose us.
-              </p>
-              <div style={{display:'flex', gap:'16px', flexWrap:'wrap'}}>
-                <Link to="/contact" className="btn btn-gold">Book a Tour</Link>
-                <Link to="/admissions" className="btn btn-outline">Apply Now</Link>
-              </div>
-            </div>
-            <div className="campus-quick-facts reveal-right">
-              {[
-                { icon:'🌡️', fact:'Climate-controlled throughout' },
-                { icon:'♿', fact:'Fully accessible campus' },
-                { icon:'🔒', fact:'24/7 security & CCTV' },
-                { icon:'🌿', fact:'LEED certified green campus' },
-                { icon:'📶', fact:'Campus-wide high-speed WiFi' },
-                { icon:'🏥', fact:'On-campus medical center' },
-              ].map((f, i) => (
-                <div key={i} className="quick-fact">
-                  <span>{f.icon}</span>
-                  <span>{f.fact}</span>
-                </div>
-              ))}
-            </div>
+          <h2 style={{ fontSize: '2.4rem', color: '#ffffff', marginBottom: 14 }}>
+            Experience Our Campus in Person
+          </h2>
+          <p style={{ color: 'rgba(255,255,255,0.78)', maxWidth: 540, margin: '0 auto 30px', fontSize: '1.05rem' }}>
+            Book a private guided campus walkthrough led by our admissions team.
+          </p>
+          <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Link to="/contact" className="btn btn-gold btn-lg">Book a Guided Campus Tour</Link>
+            <Link to="/gallery" className="btn btn-outline-white btn-lg">View Photo Gallery</Link>
           </div>
         </div>
       </section>

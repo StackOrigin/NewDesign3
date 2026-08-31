@@ -1,78 +1,118 @@
-import { useScrollReveal } from '../../hooks/useScrollReveal';
 import { Link } from 'react-router-dom';
-import './StudentLife.css';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
+
+const houseSystem = [
+  { name: 'Sagarmatha House', color: '#c2410c', letter: 'S', motto: 'Scaling Peaks of Virtue', desc: 'Fosters resilience, mountain spirit, athletic dominance, and unyielding fortitude.' },
+  { name: 'Kanchanjunga House', color: '#1e3a8a', letter: 'K', motto: 'Truth in Leadership', desc: 'Champions analytical rigor, integrity, student council leadership, and service.' },
+  { name: 'Annapurna House', color: '#059669', letter: 'A', motto: 'Nurturing Compassion', desc: 'Dedicated to ecological stewardship, community outreach, debate, and empathy.' },
+  { name: 'Lhotse House', color: '#7c3aed', letter: 'L', motto: 'Innovation & Honor', desc: 'Celebrates innovation, artistic distinction, coding mastery, and musical theater.' },
+];
 
 const clubs = [
-  { icon:'🤖', name:'Robotics Club', members:48, desc:'Design, build, and program robots for national competitions.' },
-  { icon:'🎨', name:'Visual Arts Society', members:65, desc:'Painting, sculpture, digital art, and gallery exhibitions.' },
-  { icon:'🌍', name:'Model United Nations', members:92, desc:'International diplomacy simulations and debate.' },
-  { icon:'🎵', name:'Orchestra & Band', members:75, desc:'Classical, jazz, and contemporary music ensembles.' },
-  { icon:'📰', name:'School Newspaper', members:38, desc:'Student-run journalism, photography, and media.' },
-  { icon:'♟️', name:'Chess Club', members:42, desc:'Strategy, tournaments, and national competitions.' },
-  { icon:'🧬', name:'Science Research', members:55, desc:'Lab-based research projects with faculty mentors.' },
-  { icon:'💻', name:'Coding & AI Club', members:83, desc:'Python, web dev, machine learning, and hackathons.' },
-  { icon:'🌿', name:'Environment Club', members:61, desc:'Sustainability initiatives and campus green projects.' },
-  { icon:'🎭', name:'Drama Society', members:70, desc:'Theater productions, improv, and performing arts.' },
-  { icon:'📸', name:'Photography Club', members:45, desc:'Digital photography, editing, and exhibitions.' },
-  { icon:'🤝', name:'Community Service', members:110, desc:'Volunteering, fundraising, and social impact projects.' },
-];
-
-const sports = [
-  { sport:'Soccer', icon:'⚽', achievement:'Regional Champions 2024' },
-  { sport:'Basketball', icon:'🏀', achievement:'State Finalists 2024' },
-  { sport:'Swimming', icon:'🏊', achievement:'12 National Medals' },
-  { sport:'Tennis', icon:'🎾', achievement:'Northeast Champions' },
-  { sport:'Athletics', icon:'🏃', achievement:'6 National Records' },
-  { sport:'Baseball', icon:'⚾', achievement:'Division I Champions' },
-  { sport:'Volleyball', icon:'🏐', achievement:'Conference Winners' },
-  { sport:'Wrestling', icon:'🤼', achievement:'State Champions 2024' },
-];
-
-const events = [
-  { month:'Sep', title:'Back to School Welcome Week', desc:'Orientation, ice-breakers, and campus exploration for all new students.' },
-  { month:'Oct', title:'Excelsior Science Fair', desc:'Student research projects judged by university professors and industry experts.' },
-  { month:'Nov', title:'International Cultural Festival', desc:'60+ nationalities showcase food, art, music, and traditions.' },
-  { month:'Dec', title:'Winter Gala & Concert', desc:'Annual performing arts showcase featuring orchestra, drama, and dance.' },
-  { month:'Feb', title:'Innovation Hackathon', desc:'48-hour challenge to solve real-world problems using technology.' },
-  { month:'Mar', title:'Model UN Conference', desc:'3-day international relations simulation with 800+ student delegates.' },
-  { month:'Apr', title:'Sports Day', desc:'Inter-house athletic competitions, games, and team spirit celebrations.' },
-  { month:'Jun', title:'Graduation & Awards Ceremony', desc:'Celebrating academic excellence, achievement, and new beginnings.' },
+  { number: '01', name: 'Model United Nations (MUN)', desc: 'Training delegates in diplomacy, global treaty drafting, and persuasive parliamentary speech.' },
+  { number: '02', name: 'Robotics & AI Innovation Guild', desc: 'Designing autonomous robotics, Arduino sensor arrays, Python algorithms, and 3D printing.' },
+  { number: '03', name: 'Thespian Drama & Theater Society', desc: 'Directing annual theatrical plays, musical drama performances, and bilingual street theater.' },
+  { number: '04', name: 'Bilingual Parliamentary Debating', desc: 'Regular inter-school debate tournaments in English and Nepali focusing on policy and ethics.' },
+  { number: '05', name: 'Visual Arts & Photography Guild', desc: 'Canvas painting, traditional Nepali Paubha arts, digital graphic design, and darkroom photography.' },
+  { number: '06', name: 'Orchestra & Eastern Classical Choir', desc: 'Training in violin, piano, tabla, sitar, and classical choral harmony.' },
+  { number: '07', name: 'Eco-Warriors Sustainability Club', desc: 'Zero-waste campus drives, botanical gardening, tree plantations, and organic compost projects.' },
+  { number: '08', name: 'Junior Red Cross & Community Service', desc: 'Blood donation drives, disaster relief volunteering, and village primary school book donations.' }
 ];
 
 export default function StudentLife() {
   useScrollReveal();
 
   return (
-    <div className="student-life-page page-enter">
-      <section className="page-hero">
-        <div className="container page-hero-content">
-          <nav className="breadcrumb">
-            <Link to="/">Home</Link>
-            <span className="breadcrumb-sep">/</span>
-            <span>Student Life</span>
-          </nav>
-          <span className="section-label" style={{color:'var(--gold-light)'}}>Life at Excelsior</span>
-          <h1>More Than Just Academics</h1>
-          <p>A vibrant, dynamic student community where passions are explored, friendships are formed, and leaders are made.</p>
+    <div className="student-life-page">
+      {/* Hero Header */}
+      <section className="page-header">
+        <div className="container" style={{ textAlign: 'center' }}>
+          <span className="section-eyebrow" style={{ color: 'var(--gold-light)', justifyContent: 'center' }}>Co-Curricular Enrichment</span>
+          <h1 className="page-title" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', color: '#ffffff', margin: '14px 0' }}>
+            Vibrant Student Life
+          </h1>
+          <p className="page-subtitle" style={{ margin: '0 auto', maxWidth: 660 }}>
+            Discovering passions, building lifelong friendships, and cultivating fearless leadership through over 20+ clubs, sports, and house competitions.
+          </p>
         </div>
       </section>
 
-      {/* Clubs & Activities */}
-      <section className="section" id="clubs">
+      {/* House System Spotlight */}
+      <section className="section section-cream">
         <div className="container">
           <div className="section-header centered reveal">
-            <span className="section-label">Clubs & Activities</span>
-            <h2 className="section-title">120+ Clubs for Every Interest</h2>
-            <p className="section-subtitle">From robotics to drama, from chess to environmental activism — there's a place for every passion at Excelsior.</p>
+            <span className="section-eyebrow">House Camaraderie</span>
+            <h2 className="section-title">The Four Imperial Houses</h2>
+            <p className="section-subtitle">Every student belongs to one of four legendary houses, building healthy rivalry, brotherhood, and collective pride.</p>
           </div>
-          <div className="clubs-grid">
-            {clubs.map((club, i) => (
-              <div key={i} className="club-card reveal" style={{transitionDelay:`${i * 0.06}s`}}>
-                <span className="club-icon">{club.icon}</span>
-                <div className="club-info">
-                  <h4>{club.name}</h4>
-                  <p>{club.desc}</p>
-                  <span className="club-members">👥 {club.members} members</span>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 24 }}>
+            {houseSystem.map((h, i) => (
+              <div key={i} className="card reveal" style={{ padding: 32, borderTop: `6px solid ${h.color}`, background: '#ffffff', transitionDelay: `${i * 80}ms` }}>
+                <div style={{
+                  width: 48, height: 48, borderRadius: '50%', background: `${h.color}15`,
+                  color: h.color, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: '1.3rem', fontWeight: 800, fontFamily: 'var(--font-serif)', marginBottom: 16
+                }}>
+                  {h.letter}
+                </div>
+                <h3 style={{ fontSize: '1.3rem', color: 'var(--navy)', marginBottom: 4 }}>{h.name}</h3>
+                <span style={{ fontSize: '0.8rem', fontWeight: 800, color: h.color, textTransform: 'uppercase', display: 'block', marginBottom: 12 }}>{h.motto}</span>
+                <p style={{ color: 'var(--gray-500)', fontSize: '0.9rem', lineHeight: 1.6 }}>{h.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Clubs & Societies */}
+      <section className="section section-white">
+        <div className="container">
+          <div className="section-header centered reveal">
+            <span className="section-eyebrow">Student Clubs & Societies</span>
+            <h2 className="section-title">Pursue Your True Calling</h2>
+            <p className="section-subtitle">Student-led, faculty-mentored clubs meeting weekly for competitions, projects, and creative showcases.</p>
+          </div>
+
+          <div className="grid-4">
+            {clubs.map((c, i) => (
+              <div key={i} className="card reveal" style={{ padding: 28, transitionDelay: `${i * 60}ms` }}>
+                <div style={{
+                  fontSize: '0.95rem', fontWeight: 800, color: 'var(--gold-dark)',
+                  fontFamily: 'var(--font-serif)', marginBottom: 12
+                }}>
+                  {c.number}
+                </div>
+                <h3 style={{ fontSize: '1.15rem', color: 'var(--navy)', marginBottom: 8 }}>{c.name}</h3>
+                <p style={{ color: 'var(--gray-500)', fontSize: '0.88rem', lineHeight: 1.6 }}>{c.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Annual Mega Events Preview */}
+      <section className="section section-cream">
+        <div className="container">
+          <div className="section-header centered reveal">
+            <span className="section-eyebrow">Campus Traditions</span>
+            <h2 className="section-title">Annual Flagship Festivals</h2>
+          </div>
+
+          <div className="grid-3">
+            {[
+              { title: 'Annual Sports Olympiad', time: 'Winter Term', desc: '3 days of track athletics, football finals, basketball championships, and martial arts demonstrations.', img: '/images/sports.jpg' },
+              { title: 'Valley STEM & AI Expo', time: 'Autumn Term', desc: 'Over 80 student innovations presented to university professors, entrepreneurs, and technology judges.', img: '/images/science-lab.jpg' },
+              { title: 'Grand Cultural & Musical Gala', time: 'Spring Term', desc: 'Orchestral symphonies, classical dance ballets, and drama productions attended by over 3,000 parents.', img: '/images/outing.jpg' },
+            ].map((ev, i) => (
+              <div key={i} className="card reveal" style={{ background: '#ffffff', overflow: 'hidden', transitionDelay: `${i * 80}ms` }}>
+                <div style={{ height: 200, overflow: 'hidden' }}>
+                  <img src={ev.img} alt={ev.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+                <div style={{ padding: 24 }}>
+                  <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--gold-dark)', textTransform: 'uppercase' }}>{ev.time}</span>
+                  <h3 style={{ fontSize: '1.2rem', color: 'var(--navy)', margin: '6px 0 10px' }}>{ev.title}</h3>
+                  <p style={{ color: 'var(--gray-500)', fontSize: '0.9rem', lineHeight: 1.6 }}>{ev.desc}</p>
                 </div>
               </div>
             ))}
@@ -80,148 +120,16 @@ export default function StudentLife() {
         </div>
       </section>
 
-      {/* Sports */}
-      <section className="section section--gray" id="sports">
+      {/* CTA */}
+      <section style={{ background: 'var(--navy)', color: '#ffffff', padding: '80px 0', textAlign: 'center' }}>
         <div className="container">
-          <div className="section-header centered reveal">
-            <span className="section-label">Athletics</span>
-            <h2 className="section-title">Sports & Athletic Excellence</h2>
-            <p className="section-subtitle">Our athletes compete at the highest levels while developing teamwork, discipline, and sportsmanship.</p>
-          </div>
-          <div className="sports-grid">
-            {sports.map((s, i) => (
-              <div key={i} className="sport-card reveal" style={{transitionDelay:`${i * 0.08}s`}}>
-                <span className="sport-icon">{s.icon}</span>
-                <h4>{s.sport}</h4>
-                <span className="sport-achievement">{s.achievement}</span>
-              </div>
-            ))}
-          </div>
-          <div className="sports-banner reveal">
-            <div className="sports-banner-content">
-              <h3>Join a Team. Build a Legacy.</h3>
-              <p>Our 25+ sports teams compete at regional, national, and international levels. Whether you're a seasoned athlete or just starting out, our coaches will help you reach your potential.</p>
-            </div>
-            <img src="https://images.pexels.com/photos/8927020/pexels-photo-8927020.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=300&w=500" alt="Students playing sports" loading="lazy"/>
-          </div>
-        </div>
-      </section>
-
-      {/* Arts & Creativity */}
-      <section className="section" id="arts">
-        <div className="container">
-          <div className="arts-inner">
-            <div className="arts-content reveal-left">
-              <span className="section-label">Creativity</span>
-              <h2 className="section-title">Arts & Creative Expression</h2>
-              <div className="gold-divider"/>
-              <p style={{color:'var(--gray-600)', lineHeight:'1.9', marginBottom:'24px'}}>
-                Our performing and visual arts programs are among the finest in the region. 
-                Students have access to professional-grade studios, equipment, and mentorship 
-                from practicing artists and performers.
-              </p>
-              <div className="arts-list">
-                {[
-                  { icon:'🎭', title:'Drama & Theater', desc:'Annual productions in our 1,200-seat auditorium' },
-                  { icon:'🎵', title:'Music & Orchestra', desc:'Classical training and contemporary ensembles' },
-                  { icon:'💃', title:'Dance & Movement', desc:'Ballet, contemporary, hip-hop, and world dance' },
-                  { icon:'🎨', title:'Visual Arts', desc:'Painting, sculpture, digital art, and photography' },
-                ].map((a, i) => (
-                  <div key={i} className="arts-item">
-                    <span>{a.icon}</span>
-                    <div>
-                      <strong>{a.title}</strong>
-                      <span>{a.desc}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="arts-img-grid reveal-right">
-              <img src="https://images.pexels.com/photos/8199168/pexels-photo-8199168.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=300&w=400" alt="Arts" loading="lazy"/>
-              <img src="https://images.pexels.com/photos/37811241/pexels-photo-37811241.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=300&w=400" alt="Music" loading="lazy"/>
-              <img src="https://images.pexels.com/photos/9489917/pexels-photo-9489917.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=300&w=400" alt="Reading" loading="lazy"/>
-              <img src="https://images.pexels.com/photos/34162713/pexels-photo-34162713.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=300&w=400" alt="Students" loading="lazy"/>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Events */}
-      <section className="section section--gray">
-        <div className="container">
-          <div className="section-header centered reveal">
-            <span className="section-label">Throughout the Year</span>
-            <h2 className="section-title">Events & Celebrations</h2>
-          </div>
-          <div className="events-timeline">
-            {events.map((ev, i) => (
-              <div key={i} className="event-item reveal" style={{transitionDelay:`${i * 0.08}s`}}>
-                <div className="event-month">{ev.month}</div>
-                <div className="event-connector"/>
-                <div className="event-content">
-                  <h4>{ev.title}</h4>
-                  <p>{ev.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Leadership & Community Service */}
-      <section className="section">
-        <div className="container">
-          <div className="leadership-programs-grid">
-            <div className="reveal-left">
-              <span className="section-label">Student Leadership</span>
-              <h2 className="section-title">Developing Tomorrow's Leaders</h2>
-              <div className="gold-divider"/>
-              <p style={{color:'var(--gray-600)', lineHeight:'1.9', marginBottom:'24px'}}>
-                Excelsior believes every student has leadership potential. Our student government, 
-                prefect system, and leadership development programs give students real responsibility 
-                and the skills to lead with confidence.
-              </p>
-              <div className="leadership-programs-list">
-                {[
-                  'Student Council & Government',
-                  'House Prefect System',
-                  'Peer Mentoring Program',
-                  'Leadership Retreats',
-                  'Entrepreneurship Boot Camp',
-                  'Young Leaders Conference',
-                ].map((l, i) => (
-                  <div key={i} className="leadership-item">
-                    <span>→</span> {l}
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="reveal-right">
-              <span className="section-label">Give Back</span>
-              <h2 className="section-title">Community Service</h2>
-              <div className="gold-divider"/>
-              <p style={{color:'var(--gray-600)', lineHeight:'1.9', marginBottom:'24px'}}>
-                Our CAS (Creativity, Activity, Service) program is at the heart of the IB experience. 
-                Students contribute 150+ hours of meaningful community service, developing empathy 
-                and global citizenship.
-              </p>
-              <div className="service-stats">
-                <div className="service-stat">
-                  <strong>15,000+</strong>
-                  <span>Service Hours Annually</span>
-                </div>
-                <div className="service-stat">
-                  <strong>40+</strong>
-                  <span>Partner Organizations</span>
-                </div>
-                <div className="service-stat">
-                  <strong>25</strong>
-                  <span>Countries Impacted</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <h2 style={{ fontSize: '2.3rem', color: '#ffffff', marginBottom: 14 }}>
+            Experience an Unrivaled Campus Journey
+          </h2>
+          <p style={{ color: 'rgba(255,255,255,0.78)', maxWidth: 540, margin: '0 auto 28px' }}>
+            Discover how Excelsior Apex balances rigorous academic mastery with joyful creative discovery.
+          </p>
+          <Link to="/admissions" className="btn btn-gold btn-lg">Apply for Next Session</Link>
         </div>
       </section>
     </div>

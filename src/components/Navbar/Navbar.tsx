@@ -1,57 +1,54 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import SearchModal from '../SearchModal';
 import './Navbar.css';
 
 const navLinks = [
   { label: 'Home', path: '/' },
-  {
-    label: 'About',
-    path: '/about',
-    children: [
-      { label: 'Our Story', path: '/about#history' },
-      { label: "Principal's Message", path: '/about#principal' },
-      { label: 'Leadership Team', path: '/about#leadership' },
-      { label: 'Faculty', path: '/faculty' },
-    ]
-  },
-  {
-    label: 'Academics',
-    path: '/academics',
-    children: [
-      { label: 'Curriculum Overview', path: '/academics#curriculum' },
-      { label: 'Primary Education', path: '/academics#primary' },
-      { label: 'Secondary Education', path: '/academics#secondary' },
-      { label: 'Academic Calendar', path: '/academics#calendar' },
-    ]
-  },
-  { label: 'Admissions', path: '/admissions' },
-  {
-    label: 'Campus Life',
-    path: '/campus',
-    children: [
-      { label: 'Facilities', path: '/campus' },
-      { label: 'Student Life', path: '/student-life' },
-      { label: 'Gallery', path: '/gallery' },
-    ]
-  },
-  { label: 'News & Events', path: '/news' },
+  { label: 'About', path: '/about', children: [
+    { label: 'Our Story & Heritage', path: '/about' },
+    { label: 'Leadership & Faculty', path: '/faculty' },
+    { label: 'Alumni Network', path: '/alumni' },
+    { label: 'Publications & Magazine', path: '/publications' },
+  ]},
+  { label: 'Academics', path: '/academics', children: [
+    { label: 'Curriculum & Streams', path: '/academics' },
+    { label: 'Board Exam Results & Toppers', path: '/results' },
+    { label: 'Academic Calendar', path: '/calendar' },
+    { label: 'Educational Blog & Articles', path: '/blog' },
+  ]},
+  { label: 'Admissions', path: '/admissions', children: [
+    { label: 'Admission Process & Fees', path: '/admissions' },
+    { label: 'Scholarships & Grants', path: '/scholarships' },
+    { label: 'FAQ & Inquiries', path: '/faq' },
+  ]},
+  { label: 'Campus Life', path: '/campus', children: [
+    { label: 'Facilities & Labs', path: '/campus' },
+    { label: 'Student Clubs & Activities', path: '/student-life' },
+    { label: 'Photo Gallery', path: '/gallery' },
+    { label: '360° Virtual Tour', path: '/virtual-tour' },
+  ]},
+  { label: 'Community', path: '/news', children: [
+    { label: 'News & Announcements', path: '/news' },
+    { label: 'Notice Board', path: '/notice-board' },
+    { label: 'Parent Portal & Resources', path: '/parents' },
+    { label: 'Career Vacancies', path: '/careers' },
+  ]},
   { label: 'Contact', path: '/contact' },
 ];
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const location = useLocation();
-  const dropdownTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const isHomePage = location.pathname === '/';
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 60);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
@@ -60,203 +57,126 @@ export default function Navbar() {
   }, [location]);
 
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [mobileOpen]);
 
-  const handleMouseEnter = (label: string) => {
-    if (dropdownTimeout.current) clearTimeout(dropdownTimeout.current);
+  const enter = (label: string) => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setActiveDropdown(label);
   };
-
-  const handleMouseLeave = () => {
-    dropdownTimeout.current = setTimeout(() => setActiveDropdown(null), 150);
+  const leave = () => {
+    timeoutRef.current = setTimeout(() => setActiveDropdown(null), 150);
   };
-
   const isActive = (path: string) => {
     if (path === '/') return location.pathname === '/';
     return location.pathname.startsWith(path);
   };
 
-  const transparent = isHomePage && !isScrolled;
-
   return (
     <>
-      {/* Top Bar */}
-      <div className={`navbar-topbar ${!transparent ? 'hidden' : ''}`}>
-        <div className="container">
-          <div className="navbar-topbar-inner">
-            <div className="navbar-topbar-left">
-              <span>📞 +1 (800) 395-4200</span>
-              <span>✉️ admissions@excelsior.edu</span>
-              <span>🕐 Mon–Fri: 8:00 AM – 5:00 PM</span>
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+
+      <header className={`navbar ${isScrolled ? 'navbar-solid' : 'navbar-transparent'}`}>
+        <div className="navbar-topbar">
+          <div className="container navbar-topbar-inner">
+            <div className="navbar-contact">
+              <span>Lalitpur / Kathmandu, Nepal</span>
+              <span>|</span>
+              <span>01-5201144</span>
+              <span>|</span>
+              <span>info@excelsior.edu.np</span>
             </div>
-            <div className="navbar-topbar-right">
-              <a href="#" className="topbar-link">Parent Portal</a>
-              <a href="#" className="topbar-link">Student Login</a>
-              <a href="#" className="topbar-link">Staff</a>
+            <div className="navbar-toplinks">
+              <Link to="/results">Exam Results</Link>
+              <Link to="/scholarships">Scholarships</Link>
+              <Link to="/publications">Publications</Link>
+              <Link to="/calendar">Calendar</Link>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Main Navbar */}
-      <nav className={`navbar ${isScrolled ? 'navbar--scrolled' : ''} ${transparent ? 'navbar--transparent' : ''}`}>
-        <div className="container">
-          <div className="navbar-inner">
-            {/* Logo */}
-            <Link to="/" className="navbar-logo">
-              <div className="navbar-logo-icon">
-                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <polygon points="20,2 38,14 38,36 20,38 2,36 2,14" fill="var(--navy)" stroke="var(--gold)" strokeWidth="1.5"/>
-                  <text x="20" y="26" textAnchor="middle" fill="var(--gold)" fontSize="16" fontFamily="serif" fontWeight="bold">E</text>
-                </svg>
-              </div>
-              <div className="navbar-logo-text">
-                <span className="logo-main">Excelsior</span>
-                <span className="logo-sub">International Academy</span>
-              </div>
-            </Link>
+        <div className="container navbar-main">
+          <Link to="/" className="navbar-brand">
+            <div className="navbar-logo">E</div>
+            <div>
+              <span className="navbar-title">Excelsior Preparatory</span>
+              <span className="navbar-subtitle">Excellence in Education</span>
+            </div>
+          </Link>
 
-            {/* Desktop Nav Links */}
-            <div className="navbar-links">
-              {navLinks.map(link => (
-                <div
-                  key={link.label}
-                  className="nav-item"
-                  onMouseEnter={() => link.children ? handleMouseEnter(link.label) : undefined}
-                  onMouseLeave={link.children ? handleMouseLeave : undefined}
-                >
-                  <Link
-                    to={link.path}
-                    className={`nav-link ${isActive(link.path) ? 'nav-link--active' : ''} ${link.children ? 'has-dropdown' : ''}`}
-                  >
-                    {link.label}
-                    {link.children && (
-                      <svg className="dropdown-arrow" viewBox="0 0 12 12" fill="none">
-                        <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                      </svg>
-                    )}
-                  </Link>
-                  {link.children && activeDropdown === link.label && (
+          <nav className="navbar-nav">
+            {navLinks.map(link =>
+              link.children ? (
+                <div key={link.label} className="nav-item" onMouseEnter={() => enter(link.label)} onMouseLeave={leave}>
+                  <Link to={link.path} className={`nav-link ${isActive(link.path) ? 'active' : ''}`}>{link.label} ▾</Link>
+                  {activeDropdown === link.label && (
                     <div className="dropdown-menu">
-                      <div className="dropdown-inner">
-                        {link.children.map(child => (
-                          <Link key={child.label} to={child.path} className="dropdown-item">
-                            <span className="dropdown-item-icon">→</span>
-                            {child.label}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* Right Actions */}
-            <div className="navbar-actions">
-              <button
-                className="navbar-search-btn"
-                onClick={() => setSearchOpen(!searchOpen)}
-                aria-label="Search"
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="11" cy="11" r="8"/>
-                  <path d="m21 21-4.35-4.35"/>
-                </svg>
-              </button>
-              <Link to="/admissions" className="btn btn-gold btn-sm navbar-cta">
-                Apply Now
-              </Link>
-              <button
-                className={`hamburger ${mobileOpen ? 'hamburger--open' : ''}`}
-                onClick={() => setMobileOpen(!mobileOpen)}
-                aria-label="Toggle menu"
-              >
-                <span/><span/><span/>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Search Bar */}
-        {searchOpen && (
-          <div className="navbar-search-bar">
-            <div className="container">
-              <div className="search-bar-inner">
-                <input
-                  type="text"
-                  placeholder="Search programs, news, events..."
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  autoFocus
-                />
-                <button className="search-submit">Search</button>
-                <button className="search-close" onClick={() => setSearchOpen(false)}>✕</button>
-              </div>
-            </div>
-          </div>
-        )}
-      </nav>
-
-      {/* Mobile Menu */}
-      {mobileOpen && (
-        <div className="mobile-menu">
-          <div className="mobile-menu-overlay" onClick={() => setMobileOpen(false)} />
-          <div className="mobile-menu-panel">
-            <div className="mobile-menu-header">
-              <Link to="/" className="navbar-logo" onClick={() => setMobileOpen(false)}>
-                <div className="navbar-logo-icon">
-                  <svg viewBox="0 0 40 40" fill="none">
-                    <polygon points="20,2 38,14 38,36 20,38 2,36 2,14" fill="var(--navy)" stroke="var(--gold)" strokeWidth="1.5"/>
-                    <text x="20" y="26" textAnchor="middle" fill="var(--gold)" fontSize="16" fontFamily="serif" fontWeight="bold">E</text>
-                  </svg>
-                </div>
-                <div className="navbar-logo-text">
-                  <span className="logo-main">Excelsior</span>
-                  <span className="logo-sub">International Academy</span>
-                </div>
-              </Link>
-              <button className="mobile-close" onClick={() => setMobileOpen(false)}>✕</button>
-            </div>
-            <nav className="mobile-nav">
-              {navLinks.map(link => (
-                <div key={link.label} className="mobile-nav-group">
-                  <Link
-                    to={link.path}
-                    className={`mobile-nav-link ${isActive(link.path) ? 'active' : ''}`}
-                  >
-                    {link.label}
-                  </Link>
-                  {link.children && (
-                    <div className="mobile-nav-children">
                       {link.children.map(child => (
-                        <Link key={child.label} to={child.path} className="mobile-nav-child">
-                          {child.label}
-                        </Link>
+                        <Link key={child.path} to={child.path} className="dropdown-link">{child.label}</Link>
                       ))}
                     </div>
                   )}
                 </div>
-              ))}
-            </nav>
-            <div className="mobile-menu-footer">
-              <Link to="/admissions" className="btn btn-gold" style={{width: '100%', justifyContent: 'center'}}>
-                Apply Now
-              </Link>
-              <div className="mobile-contact-info">
-                <p>📞 +1 (800) 395-4200</p>
-                <p>✉️ admissions@excelsior.edu</p>
-              </div>
-            </div>
+              ) : (
+                <Link key={link.path} to={link.path} className={`nav-link ${isActive(link.path) ? 'active' : ''}`}>{link.label}</Link>
+              )
+            )}
+          </nav>
+
+          <div className="navbar-actions">
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="btn btn-secondary btn-sm"
+              style={{ padding: '8px 14px', fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: 6 }}
+              title="Search website (Cmd+K)"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              Search
+            </button>
+            <Link to="/admissions" className="btn btn-primary btn-sm">Apply Now</Link>
+            <button className="mobile-toggle" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle Navigation">
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
           </div>
         </div>
-      )}
+      </header>
+
+      <div className={`mobile-menu ${mobileOpen ? 'open' : ''}`}>
+        <div className="mobile-menu-header">
+          <span className="mobile-menu-title">Menu Navigation</span>
+          <button className="mobile-menu-close" onClick={() => setMobileOpen(false)}>×</button>
+        </div>
+        <div style={{ padding: '0 20px 20px' }}>
+          <button
+            onClick={() => { setMobileOpen(false); setSearchOpen(true); }}
+            className="btn btn-secondary"
+            style={{ width: '100%', marginBottom: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            Search Pages...
+          </button>
+          <Link to="/admissions" className="btn btn-primary" style={{ width: '100%', marginBottom: 20 }}>
+            Apply for Admission 2025–26
+          </Link>
+        </div>
+        {navLinks.map(link =>
+          link.children ? (
+            <div key={link.label} className="mobile-dropdown">
+              <div className="mobile-dropdown-label">{link.label}</div>
+              <div className="mobile-dropdown-links">
+                {link.children.map(child => (
+                  <Link key={child.path} to={child.path} className="mobile-nav-link" onClick={() => setMobileOpen(false)}>{child.label}</Link>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <Link key={link.path} to={link.path} className={`mobile-nav-link ${isActive(link.path) ? 'active' : ''}`} onClick={() => setMobileOpen(false)}>{link.label}</Link>
+          )
+        )}
+      </div>
     </>
   );
 }

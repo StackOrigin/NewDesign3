@@ -1,218 +1,169 @@
-import { useScrollReveal } from '../../hooks/useScrollReveal';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Academics.css';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
+import { academicPrograms, resultsData } from '../../data/schoolData';
 
-const programs = [
-  {
-    id: 'primary',
-    level: 'Primary Education',
-    grades: 'Kindergarten – Grade 5',
-    icon: '🌱',
-    color: '#059669',
-    desc: 'Our Primary Years Programme (PYP) fosters inquiry, independence, and a love of learning through transdisciplinary themes and real-world connections.',
-    subjects: ['Language Arts & Literacy', 'Mathematics & Logic', 'Science & Nature', 'Social Studies', 'Arts & Music', 'Physical Education', 'Digital Literacy', 'World Languages'],
-    outcomes: ['Strong foundational skills', 'Curiosity and creativity', 'Social and emotional intelligence', 'Basic global awareness'],
-  },
-  {
-    id: 'secondary',
-    level: 'Secondary Education',
-    grades: 'Grade 6 – Grade 8',
-    icon: '📐',
-    color: '#0284c7',
-    desc: 'The Middle Years Programme (MYP) builds on primary foundations, developing analytical thinking, interdisciplinary connections, and community engagement.',
-    subjects: ['Advanced Mathematics', 'Sciences (Biology, Chemistry, Physics)', 'Humanities & Geography', 'Literature & Language', 'Second/Third Languages', 'Design & Technology', 'Arts (Visual, Performing)', 'Physical & Health Education'],
-    outcomes: ['Critical and creative thinking', 'Intercultural understanding', 'Self-management skills', 'Research and communication'],
-  },
-  {
-    id: 'higher',
-    level: 'Higher Secondary',
-    grades: 'Grade 9 – Grade 12',
-    icon: '🎓',
-    color: '#7c3aed',
-    desc: 'The IB Diploma Programme (IBDP) and Advanced Placement (AP) tracks prepare students for the world\'s most selective universities with rigorous academic challenge.',
-    subjects: ['IB Diploma Programme', 'Advanced Placement (AP) Courses', 'Extended Essay Research', 'Theory of Knowledge', 'Calculus & Advanced Math', 'AP Sciences', 'University Preparation', 'Leadership & Service'],
-    outcomes: ['University acceptance 98%', 'Global recognition', 'Independent research skills', 'Executive leadership qualities'],
-  },
-];
-
-const methodology = [
-  { icon: '🔍', title: 'Inquiry-Based Learning', desc: 'Students explore questions, investigate problems, and construct knowledge through guided discovery.' },
-  { icon: '🤝', title: 'Collaborative Projects', desc: 'Team-based assignments develop communication, leadership, and cross-cultural competencies.' },
-  { icon: '💻', title: 'Technology Integration', desc: '1:1 device program with AI tools, coding, and digital citizenship woven throughout the curriculum.' },
-  { icon: '🌍', title: 'Global Perspective', desc: 'Every subject is taught through a lens of international-mindedness and cultural awareness.' },
-  { icon: '🎨', title: 'Creative Thinking', desc: 'Design thinking workshops, maker spaces, and arts integration fuel innovation across disciplines.' },
-  { icon: '📊', title: 'Data-Driven Assessment', desc: 'Regular formative and summative assessments guide personalized learning paths for each student.' },
-];
-
-const calendar = [
-  { period: 'August–September', event: 'Back to School & Orientation Week' },
-  { period: 'October', event: 'Mid-Term Examinations' },
-  { period: 'November', event: 'Parent-Teacher Conferences' },
-  { period: 'December', event: 'Winter Break & Holiday Celebrations' },
-  { period: 'January', event: 'Second Semester Begins' },
-  { period: 'February', event: 'Science & Innovation Fair' },
-  { period: 'March', event: 'Model United Nations Conference' },
-  { period: 'April', event: 'Spring Break' },
-  { period: 'May', event: 'IB/AP Examinations' },
-  { period: 'June', event: 'Graduation & Awards Ceremony' },
+const methodologies = [
+  { number: '01', title: 'Question-First Inquiry Pedagogy', desc: 'Transforming passive textbook memorization into active hypothesis formulation, experimentation, and critical reasoning.' },
+  { number: '02', title: 'University-Grade Laboratory Immersion', desc: 'Weekly hands-on laboratory sessions in physics, chemistry, biology, robotics, and coding from Grade 4 onward.' },
+  { number: '03', title: 'Diagnostic Assessment & 1-on-1 Clinics', desc: 'Weekly adaptive diagnostic tests identify individual learning gaps early, followed by custom remedial mentorship.' },
+  { number: '04', title: 'Bilingual Oratory & Research Literacy', desc: 'Extensive debate training in English and Nepali, term thesis papers, and Model United Nations simulation.' }
 ];
 
 export default function Academics() {
   useScrollReveal();
+  const [activeTab, setActiveTab] = useState(0);
+  const prog = academicPrograms[activeTab];
 
   return (
-    <div className="academics-page page-enter">
-      <section className="page-hero">
-        <div className="container page-hero-content">
-          <nav className="breadcrumb">
-            <Link to="/">Home</Link>
-            <span className="breadcrumb-sep">/</span>
-            <span>Academics</span>
-          </nav>
-          <span className="section-label" style={{color:'var(--gold-light)'}}>Academic Programs</span>
-          <h1>A World-Class Curriculum</h1>
-          <p>Internationally accredited programs designed to challenge every student and prepare them for the world's top universities.</p>
+    <div className="academics-page">
+      {/* Hero Header */}
+      <section className="page-header">
+        <div className="container" style={{ textAlign: 'center' }}>
+          <span className="section-eyebrow" style={{ color: 'var(--gold-light)', justifyContent: 'center' }}>Scholastic Excellence</span>
+          <h1 className="page-title" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', color: '#ffffff', margin: '14px 0' }}>
+            Academic Divisions & Streams
+          </h1>
+          <p className="page-subtitle" style={{ margin: '0 auto', maxWidth: 660 }}>
+            A rigorous continuum from sensory early childhood exploration to nationally ranked Secondary (SEE) and Higher Secondary (+2) board mastery.
+          </p>
         </div>
       </section>
 
-      {/* Curriculum Overview */}
-      <section className="section" id="curriculum">
+      {/* KPI Outcomes Strip */}
+      <section style={{ background: 'var(--navy-deep)', color: '#ffffff', padding: '40px 0', borderBottom: '2px solid var(--gold)' }}>
         <div className="container">
-          <div className="section-header centered reveal">
-            <span className="section-label">Our Approach</span>
-            <h2 className="section-title">Curriculum Overview</h2>
-            <p className="section-subtitle">
-              Excelsior follows the International Baccalaureate (IB) framework integrated with 
-              Advanced Placement (AP) courses, creating a uniquely powerful academic experience.
-            </p>
-          </div>
-
-          <div className="curriculum-overview-grid">
-            <div className="curr-feature reveal">
-              <span className="curr-icon">🌐</span>
-              <h3>International Baccalaureate</h3>
-              <p>IB World School offering PYP, MYP, and IBDP programs — recognized by universities worldwide as the gold standard in secondary education.</p>
+          <div className="stats-strip-grid">
+            <div className="stat-strip-item">
+              <div className="stat-strip-number" style={{ color: 'var(--gold-light)' }}>{resultsData.summary.passRate}</div>
+              <div className="stat-strip-label" style={{ color: 'rgba(255,255,255,0.75)' }}>Board Exam Pass Rate</div>
             </div>
-            <div className="curr-feature reveal delay-200">
-              <span className="curr-icon">🎯</span>
-              <h3>Advanced Placement</h3>
-              <p>35+ AP courses offering university-level academic challenge with globally recognized examinations that earn college credit at top institutions.</p>
+            <div className="stat-strip-item">
+              <div className="stat-strip-number" style={{ color: '#ffffff' }}>{resultsData.summary.gpa4Count}</div>
+              <div className="stat-strip-label" style={{ color: 'rgba(255,255,255,0.75)' }}>Perfect 4.0 GPA Achievers (2024)</div>
             </div>
-            <div className="curr-feature reveal delay-400">
-              <span className="curr-icon">🏆</span>
-              <h3>NEASC Accreditation</h3>
-              <p>Full accreditation from the New England Association of Schools and Colleges ensures our programs meet the highest standards of academic quality.</p>
+            <div className="stat-strip-item">
+              <div className="stat-strip-number" style={{ color: 'var(--gold-light)' }}>1:20</div>
+              <div className="stat-strip-label" style={{ color: 'rgba(255,255,255,0.75)' }}>Teacher-Student Ratio</div>
+            </div>
+            <div className="stat-strip-item">
+              <div className="stat-strip-number" style={{ color: '#059669' }}>100%</div>
+              <div className="stat-strip-label" style={{ color: 'rgba(255,255,255,0.75)' }}>University & IOE/CEE Placement</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Program Levels */}
-      <section className="section section--gray" id="primary">
+      {/* Interactive Stream Explorer */}
+      <section className="section section-cream">
         <div className="container">
           <div className="section-header centered reveal">
-            <span className="section-label">Education Pathways</span>
-            <h2 className="section-title">Programs for Every Stage</h2>
+            <span className="section-eyebrow">Academic Spectrum</span>
+            <h2 className="section-title">Explore Academic Levels</h2>
+            <p className="section-subtitle">Select any stage below to inspect curriculum objectives, subject modules, and student opportunities.</p>
           </div>
-          {programs.map((prog, i) => (
-            <div key={prog.id} id={prog.id} className={`program-detail ${i % 2 !== 0 ? 'reverse' : ''} reveal`}>
-              <div className="prog-visual" style={{background: `linear-gradient(135deg, ${prog.color}22, ${prog.color}11)`}}>
-                <div className="prog-icon-large" style={{background: prog.color}}>
-                  {prog.icon}
+
+          <div className="reveal" style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center', marginBottom: 44 }}>
+            {academicPrograms.map((p, i) => (
+              <button
+                key={p.id}
+                onClick={() => setActiveTab(i)}
+                className={`program-tab-button ${activeTab === i ? 'active' : ''}`}
+              >
+                {p.icon} {p.level}
+              </button>
+            ))}
+          </div>
+
+          <div className="card reveal" style={{ padding: 48, borderTop: `6px solid ${prog.color}`, boxShadow: 'var(--shadow-lg)', background: '#ffffff' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 44, alignItems: 'start' }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 12 }}>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', color: prog.color, background: 'var(--navy-soft)', padding: '4px 14px', borderRadius: 'var(--radius-full)' }}>
+                    {prog.tag}
+                  </span>
+                  <span style={{ fontSize: '0.92rem', color: 'var(--gray-500)', fontWeight: 600 }}>{prog.grades}</span>
                 </div>
-                <div className="prog-outcomes">
-                  <h4>Key Outcomes</h4>
-                  {prog.outcomes.map((o, j) => (
-                    <div key={j} className="prog-outcome">
-                      <span className="outcome-check">✓</span>
-                      {o}
+
+                <h3 style={{ fontSize: '2rem', color: 'var(--navy)', marginBottom: 14 }}>{prog.level}</h3>
+                <p style={{ color: 'var(--gray-700)', fontSize: '1.05rem', lineHeight: 1.8, marginBottom: 28 }}>{prog.desc}</p>
+
+                <h4 style={{ fontSize: '1.15rem', color: 'var(--navy)', marginBottom: 14 }}>Specialized Pedagogical Highlights</h4>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 32 }}>
+                  {prog.features.map((feat, fi) => (
+                    <div key={fi} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: '0.92rem', color: 'var(--charcoal)' }}>
+                      <span style={{ color: prog.color, fontWeight: 700 }}>✓</span>
+                      <span>{feat}</span>
                     </div>
                   ))}
                 </div>
+
+                <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+                  <Link to="/admissions" className="btn btn-primary">Apply for {prog.level}</Link>
+                  <Link to="/results" className="btn btn-navy">View Topper Records</Link>
+                </div>
               </div>
-              <div className="prog-info">
-                <span className="prog-grade-tag">{prog.grades}</span>
-                <h2 className="section-title">{prog.level}</h2>
-                <div className="gold-divider"/>
-                <p style={{color:'var(--gray-600)', lineHeight:'1.9', marginBottom:'24px'}}>{prog.desc}</p>
-                <h4 style={{marginBottom:'12px', fontSize:'15px', fontFamily:'var(--font-sans)'}}>Core Subjects:</h4>
-                <div className="subjects-grid">
-                  {prog.subjects.map((s, j) => (
-                    <span key={j} className="subject-tag">{s}</span>
+
+              {/* Subject Breakdown Container */}
+              <div style={{ background: 'var(--cream)', padding: 36, borderRadius: 'var(--radius-lg)', border: '1px solid rgba(10,25,47,0.06)' }}>
+                <h4 style={{ fontSize: '1.15rem', color: 'var(--navy)', marginBottom: 16 }}>Core & Elective Subject Units</h4>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+                  {prog.subjects.map((sub, si) => (
+                    <span key={si} style={{ background: '#ffffff', color: 'var(--navy)', padding: '10px 18px', borderRadius: 'var(--radius-full)', fontSize: '0.88rem', fontWeight: 600, border: '1px solid rgba(10,25,47,0.08)', boxShadow: '0 2px 6px rgba(0,0,0,0.04)' }}>
+                      {sub}
+                    </span>
                   ))}
                 </div>
-                <Link to="/admissions" className="btn btn-primary" style={{marginTop:'28px'}}>
-                  Apply for This Program
-                </Link>
+
+                <div style={{ marginTop: 28, paddingTop: 20, borderTop: '1px solid rgba(10,25,47,0.08)' }}>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--gray-500)', display: 'block', marginBottom: 10 }}>
+                    Need detailed curriculum syllabus and evaluation marks distribution?
+                  </span>
+                  <Link to="/publications" style={{ color: 'var(--gold-dark)', fontWeight: 700, fontSize: '0.9rem' }}>
+                    Download Syllabus Guide PDF →
+                  </Link>
+                </div>
               </div>
             </div>
-          ))}
+          </div>
         </div>
       </section>
 
-      {/* Learning Methodology */}
-      <section className="section">
+      {/* Pedagogical Methodology */}
+      <section className="section section-white">
         <div className="container">
           <div className="section-header centered reveal">
-            <span className="section-label">How We Teach</span>
-            <h2 className="section-title">Learning Methodology</h2>
-            <p className="section-subtitle">
-              Our teaching philosophy goes beyond content delivery — we build thinkers, 
-              creators, and global citizens.
-            </p>
+            <span className="section-eyebrow">Our Methodology</span>
+            <h2 className="section-title">The Excelsior Pedagogical Advantage</h2>
+            <p className="section-subtitle">How our master faculty transforms standard textbook curricula into visionary real-world problem solving.</p>
           </div>
-          <div className="method-grid">
-            {methodology.map((m, i) => (
-              <div key={i} className="method-card reveal" style={{transitionDelay:`${i * 0.1}s`}}>
-                <span className="method-icon">{m.icon}</span>
-                <h4>{m.title}</h4>
-                <p>{m.desc}</p>
+
+          <div className="grid-4">
+            {methodologies.map((m, i) => (
+              <div key={i} className="card reveal" style={{ padding: 32, transitionDelay: `${i * 80}ms` }}>
+                <div style={{ fontSize: '1.2rem', fontWeight: 800, fontFamily: 'var(--font-serif)', color: 'var(--gold)', marginBottom: 14 }}>
+                  {m.number}
+                </div>
+                <h3 style={{ fontSize: '1.2rem', color: 'var(--navy)', marginBottom: 10 }}>{m.title}</h3>
+                <p style={{ color: 'var(--gray-500)', fontSize: '0.92rem', lineHeight: 1.65 }}>{m.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Academic Calendar */}
-      <section className="section section--gray" id="calendar">
+      {/* CTA */}
+      <section style={{ background: 'var(--navy)', color: '#ffffff', padding: '90px 0', textAlign: 'center' }}>
         <div className="container">
-          <div className="section-header centered reveal">
-            <span className="section-label">Planning Ahead</span>
-            <h2 className="section-title">Academic Calendar 2025–2026</h2>
-          </div>
-          <div className="calendar-grid">
-            {calendar.map((c, i) => (
-              <div key={i} className="calendar-item reveal" style={{transitionDelay:`${i * 0.08}s`}}>
-                <div className="calendar-period">{c.period}</div>
-                <div className="calendar-event">{c.event}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Extra Opportunities */}
-      <section className="section">
-        <div className="container">
-          <div className="section-header centered reveal">
-            <span className="section-label">Beyond the Classroom</span>
-            <h2 className="section-title">Extra Learning Opportunities</h2>
-          </div>
-          <div className="extra-grid">
-            {[
-              { icon:'🔬', title:'Research Program', desc:'Students partner with MIT and Harvard on real scientific research from Grade 10.' },
-              { icon:'🏛️', title:'Model UN', desc:'Annual participation in Harvard HMUN and NAIMUN international conferences.' },
-              { icon:'🌿', title:'Environmental Club', desc:'Student-led sustainability initiatives with real campus implementation.' },
-              { icon:'💼', title:'Business Academy', desc:'Student-run companies with mentorship from industry leaders and entrepreneurs.' },
-              { icon:'🎭', title:'Performing Arts', desc:'Drama, orchestra, choir, and dance programs with annual professional productions.' },
-              { icon:'🚀', title:'Space & STEM Club', desc:'Robotics, coding bootcamps, and NASA STEM challenge competitions.' },
-            ].map((e, i) => (
-              <div key={i} className="extra-card reveal" style={{transitionDelay:`${i * 0.1}s`}}>
-                <span>{e.icon}</span>
-                <h4>{e.title}</h4>
-                <p>{e.desc}</p>
-              </div>
-            ))}
+          <h2 style={{ fontSize: '2.4rem', color: '#ffffff', marginBottom: 14 }}>
+            Prepare for Medical, Engineering & Global University Success
+          </h2>
+          <p style={{ color: 'rgba(255,255,255,0.78)', maxWidth: 580, margin: '0 auto 30px', fontSize: '1.05rem' }}>
+            Speak directly with our academic counselors or schedule a diagnostic assessment test for the 2025–26 session.
+          </p>
+          <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Link to="/admissions" className="btn btn-gold btn-lg">Apply for Enrollment</Link>
+            <Link to="/contact" className="btn btn-outline-white btn-lg">Schedule Counseling Session</Link>
           </div>
         </div>
       </section>
